@@ -30,8 +30,12 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during autonomous
      */
+    public void autonomousInit(){
+    	Autonomous.AutoInit();
+    }
+    		
     public void autonomousPeriodic() {
-
+    	Autonomous.AutoP();
     }
 
     /**
@@ -39,24 +43,15 @@ public class Robot extends IterativeRobot {
      */
     
     public void teleopInit() {
-    	Global.Comp.start();
-    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
+    	Teleop.TeleopInit();
     }
     
-    public void teleopPeriodic() {/*
-    	driveX=driver.getRawAxis(0);
-    	driveY=driver.getRawAxis(1);
-    	if(Math.sqrt(Math.pow(driveX, 2)+Math.pow(driveY, 2))>0.1) d.arcadeDrive(driveY, driveX);
-    	else d.stopMotor();
-    	driver.setRumble(RumbleType.kLeftRumble, (driver.getRawButton(3)?1f:0));
-    	driver.setRumble(RumbleType.kRightRumble, (driver.getRawButton(4)?1f:0));
-    	*/
+    public void teleopPeriodic() {
     	try {
-        	nik.main();
-			tom.main();
+        	Teleop.TeleopP();
+			ArduinoCom.main();
 			Global.driver.refresh();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			SmartDashboard.putString("error", e.getMessage());
 		}
     }
