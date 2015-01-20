@@ -53,7 +53,6 @@ public class Robot extends IterativeRobot {
     	*/
     	try {
         	nik.main();
-			marium.main();
 			tom.main();
 			Global.driver.refresh();
 		} catch (Exception e) {
