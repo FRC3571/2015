@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3571.robot;
 
 import org.usfirst.frc.team3571.robot.XboxController.Axis;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import org.usfirst.frc.team3571.robot.XboxController.Button;
 
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
-
+	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static int Countdown = 0;
 	 public static void TeleopInit(){
 	    	Global.Comp.start();
@@ -18,7 +19,10 @@ public class Teleop {
 		 int n=0;
 			try{
 				
-				// code block
+				for(int i=0;i<4;i++){
+					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
+				}
+				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
 				RobotDrive Drive = Global.Drive;
 				boolean bButton = Global.driver.getButton(Button.B);
 				boolean xButton = Global.driver.getButton(Button.X);
