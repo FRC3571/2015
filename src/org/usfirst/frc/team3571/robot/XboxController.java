@@ -78,6 +78,7 @@ public class XboxController {
         }
         leftStick();
         rightStick();
+        trigger();
     }
     public XboxController(int i) {
         joy=new Joystick(i);
