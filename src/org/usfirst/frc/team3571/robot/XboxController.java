@@ -11,7 +11,21 @@ public class XboxController {
     private final Joystick joy;
     private final boolean[] previousButton=new boolean[10],currentButton=new boolean[10];
     public Axis LeftStick=new Axis(0,0), RightStick=new Axis(0,0);
+    public triggers Triggers=new triggers(0,0);
     
+    public class triggers{
+    	public double Right;
+    	public double Left;
+    	public double Combined;
+    	public triggers(double r, double l){
+    		Right=r;
+    		Left=l;
+    		combine();
+    	}
+    	private void combine(){
+    		Combined=Right-Left;
+    	}
+    }
     public class Axis{
         public double X,Y;
         public Axis(double x,double y){
@@ -52,11 +66,10 @@ public class XboxController {
     	RightStick.X=joy.getRawAxis(4);
     	RightStick.Y=joy.getRawAxis(5);
     }
-    public double triggerLeft(){
-        return joy.getRawAxis(2);
-    }
-    public double triggerRight(){
-        return joy.getRawAxis(3);
+    public void trigger(){
+        Triggers.Left = joy.getRawAxis(2);
+        Triggers.Right = joy.getRawAxis(3);
+        Triggers.combine();
     }
     public void refresh(){
         for (int j = 0; j < 10; j++) {

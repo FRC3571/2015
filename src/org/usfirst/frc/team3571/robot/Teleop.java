@@ -1,10 +1,11 @@
 package org.usfirst.frc.team3571.robot;
 
-import org.usfirst.frc.team3571.robot.XboxController.Axis;
+import org.usfirst.frc.team3571.robot.XboxController.*;
+
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
 import org.usfirst.frc.team3571.robot.XboxController.Button;
 
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,8 +18,9 @@ public class Teleop {
 	static boolean xButtonLast;
 	static boolean StartButton;
 	static boolean StartButtonLast;
-	static Axis LeftStick;
-	static Axis RightStick;
+	static Axis LeftStick=Global.driver.LeftStick;
+	static Axis RightStick=Global.driver.RightStick;
+	static triggers Triggers = Global.driver.Triggers;
 	static double RightTrigger;
 	static double LeftTrigger;
 	static double Y;
@@ -60,14 +62,11 @@ public class Teleop {
 				if (StartButton && !StartButtonLast){
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
-				
-				LeftStick = Global.driver.LeftStick;
-				RightStick = Global.driver.RightStick;
-				RightTrigger = Global.driver.triggerRight();
-				LeftTrigger = Global.driver.triggerLeft();
+				//LeftStick = Global.driver.LeftStick;
+				//RightStick = Global.driver.RightStick;
 				Y = LeftStick.Y;
 				X = LeftStick.X;
-				Strafe = RightStick.X;
+				Strafe = Triggers.Combined;
 				
 				if (Math.abs(X) <= 0.15){
 					X = 0;
@@ -109,9 +108,6 @@ public class Teleop {
 					Global.FifthWheel.stopMotor();
 				}
 				
-				n=1;
-				
-				// code block
 				
 			} catch(Exception e) {
 				throw e;
