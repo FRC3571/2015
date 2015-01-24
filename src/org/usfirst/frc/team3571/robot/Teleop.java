@@ -12,7 +12,6 @@ public class Teleop {
 	
 	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static int Countdown = 0;
-	static RobotDrive Drive = Global.Drive;
 	static boolean bButton;
 	static boolean xButton;
 	static boolean xButtonLast;
@@ -98,13 +97,11 @@ public class Teleop {
 						X = (Math.abs(X*2.27)<1?X*2.27:Math.abs(X)/X);
 					}
 				}
-
-				if (!bButton && (Math.abs(X) > 0 || Math.abs(Y) > 0)){
-					Drive.arcadeDrive(Y,X);
+				if(bButton){
+					X=0;
+					Y=0;
 				}
-				else {
-					Drive.stopMotor();
-				}
+				Global.ArcadeDrive(X, Y);
 				
 				if (Strafe > 0 || Strafe < 0) {
 					Global.FifthWheel.set(Strafe);

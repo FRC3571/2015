@@ -16,4 +16,14 @@ public static RobotDrive Drive = new RobotDrive(0,1,2,3);
 public static DoubleSolenoid Shifter = new DoubleSolenoid(0,1);
 public static Compressor Comp = new Compressor();
 public static Talon FifthWheel = new Talon(4);
+
+public static void ArcadeDrive(double X, double Y){
+
+	if (Math.abs(X) > 0.1 || Math.abs(Y) > 0.1){
+		Drive.arcadeDrive(Y,X);
+	}
+	else {
+		Drive.stopMotor();
+	}
+}
 }
