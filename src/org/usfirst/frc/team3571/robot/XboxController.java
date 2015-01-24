@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.Joystick.RumbleType;
  * @author TomasR
  */
 public class XboxController {
-    private final boolean[] previousButton=new boolean[10],currentButton=new boolean[10];
     private final Joystick joy;
+    private final boolean[] previousButton=new boolean[10],currentButton=new boolean[10];
+    public Axis LeftStick=new Axis(0,0), RightStick=new Axis(0,0);
+    
     public class Axis{
         public double X,Y;
         public Axis(double x,double y){
@@ -42,11 +44,13 @@ public class XboxController {
     public int getDpad(){
     	return joy.getPOV(0);
     }
-    public Axis leftStick(){
-        return new Axis(joy.getRawAxis(0),joy.getRawAxis(1));
+    private void leftStick(){
+    	LeftStick.X=joy.getRawAxis(0);
+    	LeftStick.Y=joy.getRawAxis(1);
     }
-    public Axis rightStick(){
-        return new Axis(joy.getRawAxis(4),joy.getRawAxis(5));
+    private void rightStick(){
+    	RightStick.X=joy.getRawAxis(4);
+    	RightStick.Y=joy.getRawAxis(5);
     }
     public double triggerLeft(){
         return joy.getRawAxis(2);
@@ -59,6 +63,8 @@ public class XboxController {
             previousButton[j]=currentButton[j];
             currentButton[j]=joy.getRawButton(j+1);
         }
+        leftStick();
+        rightStick();
     }
     public XboxController(int i) {
         joy=new Joystick(i);

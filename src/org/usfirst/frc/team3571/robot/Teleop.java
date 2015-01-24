@@ -61,8 +61,8 @@ public class Teleop {
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
 				
-				LeftStick = Global.driver.leftStick();
-				RightStick = Global.driver.rightStick();
+				LeftStick = Global.driver.LeftStick;
+				RightStick = Global.driver.RightStick;
 				RightTrigger = Global.driver.triggerRight();
 				LeftTrigger = Global.driver.triggerLeft();
 				Y = LeftStick.Y;
