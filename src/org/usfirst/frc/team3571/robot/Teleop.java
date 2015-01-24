@@ -12,7 +12,7 @@ public class Teleop {
 	
 	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static int Countdown = 0;
-	RobotDrive Drive = Global.Drive;
+	static RobotDrive Drive = Global.Drive;
 	static boolean bButton;
 	static boolean xButton;
 	static boolean xButtonLast;
