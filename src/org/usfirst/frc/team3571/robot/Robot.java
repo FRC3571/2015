@@ -48,9 +48,9 @@ public class Robot extends IterativeRobot {
     
     public void teleopPeriodic() {
     	try {
-        	Teleop.TeleopP();
-			ArduinoCom.main();
 			Global.driver.refresh();
+			Teleop.TeleopP();
+			ArduinoCom.main();
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
 		}

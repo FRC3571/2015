@@ -9,8 +9,23 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
+	
 	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static int Countdown = 0;
+	RobotDrive Drive = Global.Drive;
+	static boolean bButton;
+	static boolean xButton;
+	static boolean xButtonLast;
+	static boolean StartButton;
+	static boolean StartButtonLast;
+	static Axis LeftStick;
+	static Axis RightStick;
+	static double RightTrigger;
+	static double LeftTrigger;
+	static double Y;
+	static double X;
+	static double Strafe;
+	
 	 public static void TeleopInit(){
 	    	Global.Comp.start();
 	    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
@@ -23,12 +38,11 @@ public class Teleop {
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
-				RobotDrive Drive = Global.Drive;
-				boolean bButton = Global.driver.getButton(Button.B);
-				boolean xButton = Global.driver.getButton(Button.X);
-				boolean xButtonLast = Global.driver.getLastButton(Button.X);
-				boolean StartButton = Global.driver.getButton(Button.Start);
-				boolean StartButtonLast = Global.driver.getLastButton(Button.Start);
+				bButton = Global.driver.getButton(Button.B);
+				xButton = Global.driver.getButton(Button.X);
+				xButtonLast = Global.driver.getLastButton(Button.X);
+				StartButton = Global.driver.getButton(Button.Start);
+				StartButtonLast = Global.driver.getLastButton(Button.Start);
 				if (xButton && !xButtonLast)
 				{
 					Countdown = 5;
@@ -48,13 +62,13 @@ public class Teleop {
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
 				
-				Axis LeftStick = Global.driver.leftStick();
-				Axis RightStick = Global.driver.rightStick();
-				double RightTrigger = Global.driver.triggerRight();
-				double LeftTrigger = Global.driver.triggerLeft();
-				double Y = LeftStick.Y;
-				double X = LeftStick.X;
-				double Strafe = RightStick.X;
+				LeftStick = Global.driver.leftStick();
+				RightStick = Global.driver.rightStick();
+				RightTrigger = Global.driver.triggerRight();
+				LeftTrigger = Global.driver.triggerLeft();
+				Y = LeftStick.Y;
+				X = LeftStick.X;
+				Strafe = RightStick.X;
 				
 				if (Math.abs(X) <= 0.15){
 					X = 0;
