@@ -120,6 +120,7 @@ public class Teleop {
 				
 				if(bButton){
 					X=0;
+					Y=0;
 					YSpeed=0;
 				}
 				
