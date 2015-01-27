@@ -13,16 +13,21 @@ public class Teleop {
 	
 	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static int Countdown = 0;
+	static int Acceleration = 0;
+	static int LimitedSpeed = 0;
 	static boolean bButton;
 	static boolean xButton;
 	static boolean xButtonLast;
 	static boolean StartButton;
 	static boolean StartButtonLast;
+	static boolean yButton;
+	static boolean yButtonLast;
 	static Axis LeftStick=Global.driver.LeftStick;
 	static Axis RightStick=Global.driver.RightStick;
 	static triggers Triggers = Global.driver.Triggers;
 	static double RightTrigger;
 	static double LeftTrigger;
+	static double YSpeed;
 	static double Y;
 	static double X;
 	static double Strafe;
@@ -42,6 +47,8 @@ public class Teleop {
 				bButton = Global.driver.getButton(Button.B);
 				xButton = Global.driver.getButton(Button.X);
 				xButtonLast = Global.driver.getLastButton(Button.X);
+				yButton = Global.driver.getButton(Button.Y);
+				yButtonLast = Global.driver.getLastButton(Button.Y);
 				StartButton = Global.driver.getButton(Button.Start);
 				StartButtonLast = Global.driver.getLastButton(Button.Start);
 				if (xButton && !xButtonLast)
@@ -98,11 +105,29 @@ public class Teleop {
 						X = (Math.abs(X*2.27)<1?X*2.27:Math.abs(X)/X);
 					}
 				}
+				
+				if (Y > YSpeed) {
+					YSpeed+=0.01; // change this later
+					if (YSpeed > Y) {
+						YSpeed = Y;
+					}
+				} else if (YSpeed > Y) {
+					YSpeed-=0.01;
+					if (Y > YSpeed){
+						YSpeed = Y;
+					}
+				}
+				
 				if(bButton){
 					X=0;
-					Y=0;
+					YSpeed=0;
 				}
-				Global.ArcadeDrive(X, Y);
+				
+				if (Global.AccelerationLimit) {
+					Global.ArcadeDrive(X, YSpeed);
+				} else {
+					Global.ArcadeDrive(X,Y);
+				}
 				
 				if (Strafe > 0 || Strafe < 0) {
 					Global.FifthWheel.set(Strafe);

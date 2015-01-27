@@ -10,6 +10,7 @@ public class Global {
 public static XboxController driver = new XboxController(0);
 public static int Direction = 1;
 public static boolean HighGear = false;
+public static boolean AccelerationLimit = false;
 public static int ControlMode = 0;
 public static Preferences Settings = Preferences.getInstance();
 public static RobotDrive Drive = new RobotDrive(0,1,2,3);
