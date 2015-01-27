@@ -66,7 +66,7 @@ public class Teleop {
 				//RightStick = Global.driver.RightStick;
 				Y = LeftStick.Y;
 				X = LeftStick.X;
-				Strafe = Triggers.Combined;
+				Strafe = RightStick.X;
 				
 				if (Math.abs(X) <= 0.15){
 					X = 0;
@@ -81,8 +81,10 @@ public class Teleop {
 						Y = 0;
 					}	
 				} else if (Global.ControlMode == 1) {
-					if (RightTrigger > 0.05 || LeftTrigger > 0.05) {
-						Y = RightTrigger - LeftTrigger;
+					if (Math.abs(Triggers.Combined) > 0.05) {
+						Y = Triggers.Combined;
+					} else {
+						Y = 0;
 					}
 				}
 				
