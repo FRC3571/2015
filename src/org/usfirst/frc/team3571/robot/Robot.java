@@ -49,6 +49,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	try {
 			Global.driver.refresh();
+			Global.operator.refresh();
 			Teleop.TeleopP();
 			ArduinoCom.main();
 		} catch (Exception e) {

@@ -1,11 +1,8 @@
 package org.usfirst.frc.team3571.robot;
 
 import org.usfirst.frc.team3571.robot.XboxController.*;
-
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-
 import org.usfirst.frc.team3571.robot.XboxController.Button;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -135,6 +132,7 @@ public class Teleop {
 				} else {
 					Global.FifthWheel.stopMotor();
 				}
+				
 				
 				
 			} catch(Exception e) {
