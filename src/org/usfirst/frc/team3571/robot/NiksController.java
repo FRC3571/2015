@@ -14,6 +14,7 @@ public class NiksController {
     
     public boolean[] Buttons = new boolean[10];
     public boolean[] ButtonsLast = new boolean[10];
+    public boolean[] ButtonPressed = new boolean[10];
     
     public class triggers{
     	public double Right;
@@ -56,6 +57,12 @@ public class NiksController {
         for (int j = 1; j < 11; j++) {
             ButtonsLast[j]=Buttons[j];
             Buttons[j] = joy.getRawButton(j);
+            if (Buttons[j] && !ButtonsLast[j])
+            {
+            	ButtonPressed[j] = true;
+            } else {
+            	ButtonPressed[j] = false;
+            }
         }
         leftStick();
         rightStick();

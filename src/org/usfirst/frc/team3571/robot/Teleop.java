@@ -9,9 +9,9 @@ public class Teleop {
 	
 	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static boolean[] DriverButtons;
-	static boolean[] DriverButtonsLast;
+	static boolean[] DriverButtonPressed;
 	static boolean[] OperatorButtons;
-	static boolean[] OperatorButtonsLast;
+	static boolean[] OperatorButtonPressed;
 	static int Countdown = 0;
 	static int Acceleration = 0;
 	static int LimitedSpeed = 0;
@@ -33,16 +33,16 @@ public class Teleop {
 		 int n=0;
 			try{
 				DriverButtons = Global.DriverController.Buttons;
-				DriverButtonsLast = Global.DriverController.ButtonsLast;
+				DriverButtonPressed = Global.DriverController.ButtonPressed;
 				OperatorButtons = Global.OperatorController.Buttons;
-				OperatorButtonsLast = Global.OperatorController.ButtonsLast;
+				OperatorButtonPressed = Global.OperatorController.ButtonPressed;
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
 				
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
 				
-				if (DriverButtons[Button.X] && !DriverButtonsLast[Button.X])
+				if (DriverButtonPressed[Button.X])
 				{
 					Countdown = 5;
 					
@@ -60,7 +60,7 @@ public class Teleop {
 				
 				
 				
-				if (DriverButtons[Button.Start] && !DriverButtonsLast[Button.Start]){
+				if (DriverButtonPressed[Button.Start]){
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
 				//LeftStick = Global.driver.LeftStick;
