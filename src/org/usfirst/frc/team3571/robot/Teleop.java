@@ -1,8 +1,10 @@
 package org.usfirst.frc.team3571.robot;
 
 import org.usfirst.frc.team3571.robot.XboxController.*;
+
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import org.usfirst.frc.team3571.robot.XboxController.Button;
+
+
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,13 +14,6 @@ public class Teleop {
 	static int Countdown = 0;
 	static int Acceleration = 0;
 	static int LimitedSpeed = 0;
-	static boolean bButton;
-	static boolean xButton;
-	static boolean xButtonLast;
-	static boolean StartButton;
-	static boolean StartButtonLast;
-	static boolean yButton;
-	static boolean yButtonLast;
 	static Axis LeftStick=Global.driver.LeftStick;
 	static Axis RightStick=Global.driver.RightStick;
 	static triggers Triggers = Global.driver.Triggers;
@@ -40,15 +35,9 @@ public class Teleop {
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
+				buttons DriverButtons=Global.driver.Buttons;
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
-				bButton = Global.driver.getButton(Button.B);
-				xButton = Global.driver.getButton(Button.X);
-				xButtonLast = Global.driver.getLastButton(Button.X);
-				yButton = Global.driver.getButton(Button.Y);
-				yButtonLast = Global.driver.getLastButton(Button.Y);
-				StartButton = Global.driver.getButton(Button.Start);
-				StartButtonLast = Global.driver.getLastButton(Button.Start);
-				if (xButton && !xButtonLast)
+				if (DriverButtons.X.changed)
 				{
 					Countdown = 5;
 					
@@ -63,11 +52,9 @@ public class Teleop {
 				}
 				SmartDashboard.putNumber("ControlMode", Global.ControlMode);
 				
-				if (StartButton && !StartButtonLast){
+				if (DriverButtons.Start.changed){
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
-				//LeftStick = Global.driver.LeftStick;
-				//RightStick = Global.driver.RightStick;
 				Y = LeftStick.Y;
 				X = LeftStick.X;
 				Strafe = RightStick.X;
@@ -115,7 +102,7 @@ public class Teleop {
 					}
 				}
 				
-				if(bButton){
+				if(DriverButtons.B.current){
 					X=0;
 					Y=0;
 					YSpeed=0;
@@ -132,7 +119,6 @@ public class Teleop {
 				} else {
 					Global.FifthWheel.stopMotor();
 				}
-				
 				
 				
 			} catch(Exception e) {

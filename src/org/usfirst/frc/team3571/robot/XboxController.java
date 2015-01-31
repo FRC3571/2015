@@ -9,9 +9,10 @@ import edu.wpi.first.wpilibj.Joystick.RumbleType;
  */
 public class XboxController {
     private final Joystick joy;
-    private final boolean[] previousButton=new boolean[10],currentButton=new boolean[10];
     public Axis LeftStick=new Axis(0,0), RightStick=new Axis(0,0);
     public triggers Triggers=new triggers(0,0);
+    private Button[] button=new Button[10];
+    public buttons Buttons=new buttons();
     
     public class triggers{
     	public double Right;
@@ -33,27 +34,30 @@ public class XboxController {
             Y=y;
         }
     }
+    public class buttons{
+        public Button A =button[0];
+        public Button B =button[1];
+        public Button X =button[2];
+        public Button Y =button[3];
+        public Button Start =button[7];
+        public Button Back =button[6];
+        public Button LeftStick =button[8];
+        public Button RightStick =button[9];
+        public Button RB =button[5];
+        public Button LB =button[4];
+    	
+    }
     public static class Button{
-        public int i;
+        private int i;
+        public boolean current=false , last=false,changed=false;
+        private void set(boolean c){
+        	last=current;
+        	current=c;
+        	changed=last && !current;
+        }
         public Button(int a){
             i=a;
         }
-        public static final Button A =new Button(1);
-        public static final Button B =new Button(2);
-        public static final Button X =new Button(3);
-        public static final Button Y =new Button(4);
-        public static final Button Start =new Button(8);
-        public static final Button Back =new Button(7);
-        public static final Button LeftStick =new Button(9);
-        public static final Button RightStick =new Button(10);
-        public static final Button RB =new Button(6);
-        public static final Button LB =new Button(5);
-    }
-    public boolean getButton(Button button){
-        return currentButton[button.i-1];
-    }
-    public boolean getLastButton(Button button){
-        return previousButton[button.i-1];
     }
     public int getDpad(){
     	return joy.getPOV(0);
@@ -72,19 +76,16 @@ public class XboxController {
         Triggers.combine();
     }
     public void refresh(){
-        for (int j = 0; j < 10; j++) {
-            previousButton[j]=currentButton[j];
-            currentButton[j]=joy.getRawButton(j+1);
-        }
+    	for(int i=0;i<10;i++){
+    		button[i].set(joy.getRawButton(i));
+    	}
         leftStick();
         rightStick();
         trigger();
     }
     public XboxController(int i) {
         joy=new Joystick(i);
-        for (int j = 0; j < 10; j++) {
-            currentButton[j]=joy.getRawButton(j);
-        }
+        refresh();
     }
     public void vibrate(RumbleType type,float value){
     	joy.setRumble(type, value);
