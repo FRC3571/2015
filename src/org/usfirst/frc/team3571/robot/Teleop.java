@@ -37,7 +37,7 @@ public class Teleop {
 				}
 				buttons DriverButtons=Global.driver.Buttons;
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
-				if (DriverButtons.X.changedHigh)
+				if (DriverButtons.X.changedDown)
 				{
 					Countdown = 5;
 					
@@ -52,7 +52,7 @@ public class Teleop {
 				}
 				SmartDashboard.putNumber("ControlMode", Global.ControlMode);
 				
-				if (DriverButtons.Start.changedHigh){
+				if (DriverButtons.Start.changedDown){
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
 				Y = LeftStick.Y;

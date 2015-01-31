@@ -49,12 +49,12 @@ public class XboxController {
     }
     public static class Button{
         private int i;
-        public boolean current=false , last=false,changedHigh=false,changedLow=false;
+        public boolean current=false , last=false,changedDown=false,changedUp=false;
         private void set(boolean c){
         	last=current;
         	current=c;
-        	changedHigh=!last && current;
-        	changedLow=last && !current;
+        	changedDown=!last && current;
+        	changedUp=last && !current;
         }
         public Button(int a){
             i=a;

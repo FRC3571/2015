@@ -10,7 +10,7 @@ public class ArduinoCom {
 		int n = 0;
 		try {
 			n = 1;
-			if (Global.driver.Buttons.Back.changedHigh) {
+			if (Global.driver.Buttons.Back.changedDown) {
 				String WriteString = "go";
 				char[] CharArray = WriteString.toCharArray();
 				byte[] WriteData = new byte[CharArray.length];
