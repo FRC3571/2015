@@ -37,6 +37,7 @@ public class Teleop {
 				}
 				buttons DriverButtons=Global.driver.Buttons;
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
+				n = 1;
 				if (DriverButtons.X.changedDown)
 				{
 					Countdown = 5;
@@ -50,6 +51,7 @@ public class Teleop {
 						Global.HighGear = true;
 					}
 				}
+				n = 2;
 				SmartDashboard.putNumber("ControlMode", Global.ControlMode);
 				
 				if (DriverButtons.Start.changedDown){
@@ -78,6 +80,7 @@ public class Teleop {
 						Y = 0;
 					}
 				}
+				n = 3;
 				
 				if (Countdown > 0) {
 					Countdown-=1;
@@ -101,6 +104,7 @@ public class Teleop {
 						YSpeed = Y;
 					}
 				}
+				n = 4;
 				
 				if(DriverButtons.B.current){
 					X=0;
@@ -119,10 +123,11 @@ public class Teleop {
 				} else {
 					Global.FifthWheel.stopMotor();
 				}
+				n = 5;
 				
 				
 			} catch(Exception e) {
-				throw e;
+				throw new Exception("Teleop "+n);
 			}
 	 }
 }

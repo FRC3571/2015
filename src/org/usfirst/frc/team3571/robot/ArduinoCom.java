@@ -13,15 +13,18 @@ public class ArduinoCom {
 			if (Global.driver.Buttons.Back.changedDown) {
 				String WriteString = "go";
 				char[] CharArray = WriteString.toCharArray();
+				n = 2;
 				byte[] WriteData = new byte[CharArray.length];
 				for (int i = 0; i < CharArray.length; i++) {
 					WriteData[i] = (byte) CharArray[i];
 				}
+				n = 3;
 				Wire.transaction(WriteData, WriteData.length, null, 0);
+				n = 4;
 			}
 
 		} catch (Exception e) {
-			throw e;
+			throw new Exception("ArduinoCom "+n);
 		}
 	}
 }
