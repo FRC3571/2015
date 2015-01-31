@@ -1,27 +1,23 @@
 package org.usfirst.frc.team3571.robot;
 
-import org.usfirst.frc.team3571.robot.XboxController.*;
+import org.usfirst.frc.team3571.robot.NiksController.*;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import org.usfirst.frc.team3571.robot.XboxController.Button;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
 	
 	static PowerDistributionPanel pdp=new PowerDistributionPanel();
+	static boolean[] DriverButtons;
+	static boolean[] DriverButtonsLast;
+	static boolean[] OperatorButtons;
+	static boolean[] OperatorButtonsLast;
 	static int Countdown = 0;
 	static int Acceleration = 0;
 	static int LimitedSpeed = 0;
-	static boolean bButton;
-	static boolean xButton;
-	static boolean xButtonLast;
-	static boolean StartButton;
-	static boolean StartButtonLast;
-	static boolean yButton;
-	static boolean yButtonLast;
-	static Axis LeftStick=Global.driver.LeftStick;
-	static Axis RightStick=Global.driver.RightStick;
-	static triggers Triggers = Global.driver.Triggers;
+	static Axis LeftStick=Global.DriverController.LeftStick;
+	static Axis RightStick=Global.DriverController.RightStick;
+	static triggers Triggers = Global.DriverController.Triggers;
 	static double RightTrigger;
 	static double LeftTrigger;
 	static double YSpeed;
@@ -36,19 +32,17 @@ public class Teleop {
 	 public static void TeleopP() throws Exception{
 		 int n=0;
 			try{
-				
+				DriverButtons = Global.DriverController.Buttons;
+				DriverButtonsLast = Global.DriverController.ButtonsLast;
+				OperatorButtons = Global.OperatorController.Buttons;
+				OperatorButtonsLast = Global.OperatorController.ButtonsLast;
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
+				
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
-				bButton = Global.driver.getButton(Button.B);
-				xButton = Global.driver.getButton(Button.X);
-				xButtonLast = Global.driver.getLastButton(Button.X);
-				yButton = Global.driver.getButton(Button.Y);
-				yButtonLast = Global.driver.getLastButton(Button.Y);
-				StartButton = Global.driver.getButton(Button.Start);
-				StartButtonLast = Global.driver.getLastButton(Button.Start);
-				if (xButton && !xButtonLast)
+				
+				if (DriverButtons[Button.X] && !DriverButtonsLast[Button.X])
 				{
 					Countdown = 5;
 					
@@ -63,7 +57,10 @@ public class Teleop {
 				}
 				SmartDashboard.putNumber("ControlMode", Global.ControlMode);
 				
-				if (StartButton && !StartButtonLast){
+				
+				
+				
+				if (DriverButtons[Button.Start] && !DriverButtonsLast[Button.Start]){
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
 				//LeftStick = Global.driver.LeftStick;
@@ -115,7 +112,7 @@ public class Teleop {
 					}
 				}
 				
-				if(bButton){
+				if(DriverButtons[Button.B]){
 					X=0;
 					Y=0;
 					YSpeed=0;

@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 public class Global {
-public static XboxController driver = new XboxController(0);
-public static XboxController operator = new XboxController(1);
+//public static XboxController driver = new XboxController(0);
+//public static XboxController operator = new XboxController(1);
+public static NiksController DriverController = new NiksController(0);
+public static NiksController OperatorController = new NiksController(0);
 public static int Direction = 1;
 public static boolean HighGear = false;
 public static boolean AccelerationLimit = false;
