@@ -17,6 +17,7 @@ public class Teleop {
 	static Axis LeftStick=Global.driver.LeftStick;
 	static Axis RightStick=Global.driver.RightStick;
 	static triggers Triggers = Global.driver.Triggers;
+	static buttons DriverButtons=Global.driver.Buttons;
 	static double RightTrigger;
 	static double LeftTrigger;
 	static double YSpeed;
@@ -35,7 +36,6 @@ public class Teleop {
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
-				buttons DriverButtons=Global.driver.Buttons;
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
 				n = 1;
 				if (DriverButtons.X.changedDown)
@@ -112,11 +112,7 @@ public class Teleop {
 					YSpeed=0;
 				}
 				
-				if (Global.AccelerationLimit) {
-					Global.ArcadeDrive(X, YSpeed);
-				} else {
-					Global.ArcadeDrive(X,Y);
-				}
+				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y));
 				
 				if (Strafe > 0 || Strafe < 0) {
 					Global.FifthWheel.set(Strafe);
