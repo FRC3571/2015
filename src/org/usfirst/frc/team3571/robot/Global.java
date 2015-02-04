@@ -18,9 +18,18 @@ public static Talon FifthWheel = new Talon(4);
 public static Talon LiftMotor = new Talon(5);
 public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
 
-public static void ArcadeDrive(double X, double Y){
-
-	if (Math.abs(X) > 0.1 || Math.abs(Y) > 0.1){
+public static void ArcadeDrive(double X, double Y, double Center){
+	
+	if (Math.abs(Center) > 0.15 || Math.abs(X) > 0) {
+		if (Math.abs(Center+(X*0.32831)) > 1 ){ 
+			Center-=(Center+(X*0.32831))%1;
+		}
+		Global.FifthWheel.set(Center+(X*0.32831));
+	} else {
+		Global.FifthWheel.stopMotor();
+	}
+	
+	if (Math.abs(X) > 0 || Math.abs(Y) > 0){
 		Drive.arcadeDrive(Y,X);
 	}
 	else {

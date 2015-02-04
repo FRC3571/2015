@@ -65,10 +65,6 @@ public class Teleop {
 					X = 0;
 				}	
 				
-				if (Math.abs(Strafe) <= 0.15) {
-					Strafe = 0;
-				}
-				
 				if (Global.ControlMode == 0) {
 					if (Math.abs(Y) <= 0.15){
 						Y = 0;
@@ -112,13 +108,9 @@ public class Teleop {
 					YSpeed=0;
 				}
 				
-				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y));
+				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				
-				if (Strafe > 0 || Strafe < 0) {
-					Global.FifthWheel.set(Strafe);
-				} else {
-					Global.FifthWheel.stopMotor();
-				}
+				
 				n = 5;
 				
 				

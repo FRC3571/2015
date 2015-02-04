@@ -21,9 +21,13 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	Global.Shifter.set(Value.kReverse);
-    	if (!Global.Settings.containsKey("ControlMode")) {
-    		Global.Settings.putInt("ControlMode", 0);
+    	try {
+	    	Global.Shifter.set(Value.kReverse);
+	    	if (!Global.Settings.containsKey("ControlMode")) {
+	    		Global.Settings.putInt("ControlMode", 0);
+	    	}
+    	} catch (Exception e) {
+    		SmartDashboard.putString("error", e.getMessage());
     	}
     }
 
@@ -31,11 +35,19 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousInit(){
-    	Autonomous.AutoInit();
+    	try {
+    		Autonomous.AutoInit();
+    	} catch (Exception e) {
+    		SmartDashboard.putString("error", e.getMessage());
+    	}
     }
     		
     public void autonomousPeriodic() {
-    	Autonomous.AutoP();
+    	try {
+    		Autonomous.AutoP();
+    	} catch (Exception e) {
+    		SmartDashboard.putString("error", e.getMessage());
+    	}
     }
 
     /**
@@ -43,7 +55,11 @@ public class Robot extends IterativeRobot {
      */
     
     public void teleopInit() {
-    	Teleop.TeleopInit();
+    	try {
+    		Teleop.TeleopInit();
+    	} catch (Exception e) {
+    		SmartDashboard.putString("error", e.getMessage());
+    	}
     }
     
     public void teleopPeriodic() {
@@ -61,13 +77,18 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
+    	
     
     }
     public void disableInit(){
-    	Global.Settings.putInt("ControlMode", Global.ControlMode);
-    	Global.Settings.save();
-		SmartDashboard.putString("error","");
-		Global.Comp.stop();
+    	try {
+	    	Global.Settings.putInt("ControlMode", Global.ControlMode);
+	    	Global.Settings.save();
+			SmartDashboard.putString("error","");
+			Global.Comp.stop();
+    	} catch (Exception e) {
+    		SmartDashboard.putString("error", e.getMessage());
+    	}
     }
     
 }
