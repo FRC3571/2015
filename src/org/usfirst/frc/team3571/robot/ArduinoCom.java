@@ -5,7 +5,19 @@ import edu.wpi.first.wpilibj.I2C.Port;
 
 public class ArduinoCom {
 	static I2C Wire = new I2C(Port.kOnboard, 4);
-
+	public class  LED {
+		public byte R=0,G=0,B=0, movement=0,min=0;
+		public int timein=500,timeout=500;
+		public double mspeed=10;
+		public boolean bounce=false,changingLight=false,fadeIn=false,fadeOut=false;
+		public byte max;
+		public LED(byte Red, byte Green, byte Blue){
+			max =29;
+		}
+		public void set(){
+			
+		}
+	}
 	public static void main() throws Exception {
 		int n = 0;
 		try {

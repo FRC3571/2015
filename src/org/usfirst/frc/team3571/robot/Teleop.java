@@ -45,11 +45,10 @@ public class Teleop {
 					if (Global.HighGear)
 					{
 						Global.Shifter.set(Value.kReverse);
-						Global.HighGear = false;
 					} else {
 						Global.Shifter.set(Value.kForward);
-						Global.HighGear = true;
 					}
+					Global.HighGear=!Global.HighGear;
 				}
 				n = 2;
 				SmartDashboard.putNumber("ControlMode", Global.ControlMode);
@@ -101,19 +100,13 @@ public class Teleop {
 					}
 				}
 				n = 4;
-				
 				if(DriverButtons.B.current){
 					X=0;
 					Y=0;
 					YSpeed=0;
 				}
-				
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
-				
-				
 				n = 5;
-				
-				
 			} catch(Exception e) {
 				throw new Exception("Teleop "+n);
 			}
