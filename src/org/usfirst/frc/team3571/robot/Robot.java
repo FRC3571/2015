@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 public class Robot extends IterativeRobot {
 	//RobotDrive d = new RobotDrive(0,1,2,3); 
 	double driveX=0,driveY=0;
+	Camera CameraThread;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -26,6 +27,7 @@ public class Robot extends IterativeRobot {
 	    	if (!Global.Settings.containsKey("ControlMode")) {
 	    		Global.Settings.putInt("ControlMode", 0);
 	    	}
+	    	CameraThread = new Camera();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
@@ -57,6 +59,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
     	try {
     		Teleop.TeleopInit();
+    		CameraThread.teleOp();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
