@@ -1,16 +1,30 @@
 package org.usfirst.frc.team3571.robot;
 
-import org.usfirst.frc.team3571.robot.XboxController.Axis;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import org.usfirst.frc.team3571.robot.XboxController.Button;
+import org.usfirst.frc.team3571.robot.XboxController.*;
 
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
+
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
+	
 	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static int Countdown = 0;
+	static int Acceleration = 0;
+	static int LimitedSpeed = 0;
+	static Axis LeftStick=Global.driver.LeftStick;
+	static Axis RightStick=Global.driver.RightStick;
+	static triggers Triggers = Global.driver.Triggers;
+	static buttons DriverButtons=Global.driver.Buttons;
+	static double RightTrigger;
+	static double LeftTrigger;
+	static double YSpeed;
+	static double Y;
+	static double X;
+	static double Strafe;
+	
 	 public static void TeleopInit(){
 	    	Global.Comp.start();
 	    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
@@ -23,56 +37,45 @@ public class Teleop {
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
-				RobotDrive Drive = Global.Drive;
-				boolean bButton = Global.driver.getButton(Button.B);
-				boolean xButton = Global.driver.getButton(Button.X);
-				boolean xButtonLast = Global.driver.getLastButton(Button.X);
-				boolean StartButton = Global.driver.getButton(Button.Start);
-				boolean StartButtonLast = Global.driver.getLastButton(Button.Start);
-				if (xButton && !xButtonLast)
+				n = 1;
+				if (DriverButtons.X.changedDown)
 				{
 					Countdown = 5;
 					
 					if (Global.HighGear)
 					{
 						Global.Shifter.set(Value.kReverse);
-						Global.HighGear = false;
 					} else {
 						Global.Shifter.set(Value.kForward);
-						Global.HighGear = true;
 					}
+					Global.HighGear=!Global.HighGear;
 				}
+				n = 2;
 				SmartDashboard.putNumber("ControlMode", Global.ControlMode);
 				
-				if (StartButton && !StartButtonLast){
+				if (DriverButtons.Start.changedDown){
 					Global.ControlMode = (Global.ControlMode+1)%2;
 				}
-				
-				Axis LeftStick = Global.driver.leftStick();
-				Axis RightStick = Global.driver.rightStick();
-				double RightTrigger = Global.driver.triggerRight();
-				double LeftTrigger = Global.driver.triggerLeft();
-				double Y = LeftStick.Y;
-				double X = LeftStick.X;
-				double Strafe = RightStick.X;
+				Y = LeftStick.Y;
+				X = LeftStick.X;
+				Strafe = RightStick.X;
 				
 				if (Math.abs(X) <= 0.15){
 					X = 0;
 				}	
-				
-				if (Math.abs(Strafe) <= 0.15) {
-					Strafe = 0;
-				}
 				
 				if (Global.ControlMode == 0) {
 					if (Math.abs(Y) <= 0.15){
 						Y = 0;
 					}	
 				} else if (Global.ControlMode == 1) {
-					if (RightTrigger > 0.05 || LeftTrigger > 0.05) {
-						Y = RightTrigger - LeftTrigger;
+					if (Math.abs(Triggers.Combined) > 0.05) {
+						Y = Triggers.Combined;
+					} else {
+						Y = 0;
 					}
 				}
+				n = 3;
 				
 				if (Countdown > 0) {
 					Countdown-=1;
@@ -84,26 +87,28 @@ public class Teleop {
 						X = (Math.abs(X*2.27)<1?X*2.27:Math.abs(X)/X);
 					}
 				}
-
-				if (!bButton && (Math.abs(X) > 0 || Math.abs(Y) > 0)){
-					Drive.arcadeDrive(Y,X);
+				
+				if (Y > YSpeed) {
+					YSpeed+=0.01; // change this later
+					if (YSpeed > Y) {
+						YSpeed = Y;
+					}
+				} else if (YSpeed > Y) {
+					YSpeed-=0.01;
+					if (Y > YSpeed){
+						YSpeed = Y;
+					}
 				}
-				else {
-					Drive.stopMotor();
+				n = 4;
+				if(DriverButtons.B.current){
+					X=0;
+					Y=0;
+					YSpeed=0;
 				}
-				
-				if (Strafe > 0 || Strafe < 0) {
-					Global.FifthWheel.set(Strafe);
-				} else {
-					Global.FifthWheel.stopMotor();
-				}
-				
-				n=1;
-				
-				// code block
-				
+				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
+				n = 5;
 			} catch(Exception e) {
-				throw e;
+				throw new Exception("Teleop "+n);
 			}
 	 }
 }
