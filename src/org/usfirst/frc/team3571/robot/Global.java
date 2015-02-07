@@ -20,10 +20,10 @@ public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
 
 public static void ArcadeDrive(double X, double Y, double Center){
 	
-	if (Math.abs(Center) > 0.15 || Math.abs(X) > 0) {
-		if (Math.abs(Center+(X*0.32831)) > 1 ){ 
-			Center-=(Center+(X*0.32831))%1;
-		}
+	if (Math.abs(Center) > 0.2 || Math.abs(X) > 0) {
+		//if (Math.abs(Center+(X*0.32831)) > 1 ){ 
+		//	Center-=(Center+(X*0.32831))%1;
+		//}
 		Global.FifthWheel.set(Center+(X*0.32831));
 	} else {
 		Global.FifthWheel.stopMotor();

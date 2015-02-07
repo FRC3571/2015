@@ -28,10 +28,15 @@ public class Teleop {
 	 public static void TeleopInit(){
 	    	Global.Comp.start();
 	    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
+    		SmartDashboard.putString("error", "Teleop "+0);
 	 }
 	 public static void TeleopP() throws Exception{
 		 int n=0;
 			try{
+				LeftStick=Global.driver.LeftStick;
+				RightStick=Global.driver.RightStick;
+				
+				triggers Triggers = Global.driver.Triggers;
 				
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
@@ -44,9 +49,9 @@ public class Teleop {
 					
 					if (Global.HighGear)
 					{
-						Global.Shifter.set(Value.kReverse);
+						//Global.Shifter.set(Value.kReverse);
 					} else {
-						Global.Shifter.set(Value.kForward);
+						//Global.Shifter.set(Value.kForward);
 					}
 					Global.HighGear=!Global.HighGear;
 				}
@@ -108,7 +113,7 @@ public class Teleop {
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 5;
 			} catch(Exception e) {
-				throw new Exception("Teleop "+n);
+				throw new Exception("Teleop "+n+" "+e.getMessage());
 			}
 	 }
 }

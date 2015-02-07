@@ -29,6 +29,7 @@ public class Robot extends IterativeRobot {
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
+    	SmartDashboard.putString("error", "Teleop "+0);
     }
 
     /**
