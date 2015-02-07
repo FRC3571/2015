@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
-public class Vission implements  {
+public class Vission implements Runnable {
 	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
 		double PercentAreaToImageArea;
 		double Area;
@@ -22,7 +22,6 @@ public class Vission implements  {
 		double BoundingRectTop;
 		double BoundingRectRight;
 		double BoundingRectBottom;
-		
 		public int compareTo(ParticleReport r)
 		{
 			return (int)(r.Area - this.Area);
@@ -34,6 +33,7 @@ public class Vission implements  {
 		}
 	}
 
+	boolean ini=false;
 	//Structure to represent the scores for the various tests used for target identification
 	public class Scores {
 		double Trapezoid;
@@ -43,39 +43,36 @@ public class Vission implements  {
 	}
 
 	//Images
-	static Image frame;
-	static Image binaryFrame;
-	static int imaqError;
+	Image frame;
+	Image binaryFrame;
+	int imaqError;
 
 	//Constants
-	static NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(119, 137);	//Default hue range for yellow tote
-	static NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(222, 255);	//Default saturation range for yellow tote
-	static NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(239, 255);	//Default value range for yellow tote
-	static double AREA_MINIMUM = 0.5; //Default Area minimum for particle as a percentage of total image area
-	static double LONG_RATIO = 2.22; //Tote long side = 26.9 / Tote height = 12.1 = 2.22
-	static double SHORT_RATIO = 1.4; //Tote short side = 16.9 / Tote height = 12.1 = 1.4
-	static double SCORE_MIN = 75.0;  //Minimum score to be considered a tote
-	static double VIEW_ANGLE = 49.4; //View angle fo camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
-	static NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
-	static NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
-	static Scores scores = new Scores();
-	public class Point{
-		public double X,Y;
-		public Point(double x,double y){
-			X=x;
-			Y=y;
-		}
-	}
-	static AxisCamera cam;
-	public static void begin(){
+	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(119, 137);	//Default hue range for yellow tote
+	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(222, 255);	//Default saturation range for yellow tote
+	NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(239, 255);	//Default value range for yellow tote
+	double AREA_MINIMUM = 0.5; //Default Area minimum for particle as a percentage of total image area
+	double LONG_RATIO = 2.22; //Tote long side = 26.9 / Tote height = 12.1 = 2.22
+	double SHORT_RATIO = 1.4; //Tote short side = 16.9 / Tote height = 12.1 = 1.4
+	double SCORE_MIN = 75.0;  //Minimum score to be considered a tote
+	double VIEW_ANGLE = 49.4; //View angle fo camera, set to Axis m1011 by default, 64 for m1013, 51.7 for 206, 52 for HD3000 square, 60 for HD3000 640x480
+	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
+	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
+	Scores scores = new Scores();
+	AxisCamera cam;
+	public void begin(){
+		if(!ini){
+			
 		frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
 		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
 		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
 
 		cam=new AxisCamera("10.35.71.11");
+		}
+		ini=true;
 		
 	}
-	public static void main(){
+	public void main(){
 		//read file in from disk. For this example to run you need to copy image20.jpg from the SampleImages folder to the
 		//directory shown below using FTP or SFTP: http://wpilib.screenstepslive.com/s/4485/m/24166/l/282299-roborio-ftp
 		NIVision.imaqReadFile(frame, "10.35.71.12");
@@ -148,7 +145,7 @@ public class Vission implements  {
 
 		Timer.delay(0.005);				// wait for a motor update time
 	}
-	static boolean CompareParticleSizes(ParticleReport particle1, ParticleReport particle2)
+	boolean CompareParticleSizes(ParticleReport particle1, ParticleReport particle2)
 	{
 		//we want descending sort order
 		return particle1.PercentAreaToImageArea > particle2.PercentAreaToImageArea;
@@ -158,7 +155,7 @@ public class Vission implements  {
 	 * Converts a ratio with ideal value of 1 to a score. The resulting function is piecewise
 	 * linear going from (0,0) to (1,100) to (2,0) and is 0 for all inputs outside the range 0-2
 	 */
-	static double ratioToScore(double ratio)
+	double ratioToScore(double ratio)
 	{
 		return (Math.max(0, Math.min(100*(1-Math.abs(1-ratio)), 100)));
 	}
@@ -166,7 +163,7 @@ public class Vission implements  {
 	/**
 	 * Method to score convex hull area. This scores how "complete" the particle is. Particles with large holes will score worse than a filled in shape
 	 */
-	static double ConvexHullAreaScore(ParticleReport report)
+	double ConvexHullAreaScore(ParticleReport report)
 	{
 		return ratioToScore((report.Area/report.ConvexHullArea)*1.18);
 	}
@@ -175,7 +172,7 @@ public class Vission implements  {
 	 * Method to score if the particle appears to be a trapezoid. Compares the convex hull (filled in) area to the area of the bounding box.
 	 * The expectation is that the convex hull area is about 95.4% of the bounding box area for an ideal tote.
 	 */
-	static double TrapezoidScore(ParticleReport report)
+	double TrapezoidScore(ParticleReport report)
 	{
 		return ratioToScore(report.ConvexHullArea/((report.BoundingRectRight-report.BoundingRectLeft)*(report.BoundingRectBottom-report.BoundingRectTop)*.954));
 	}
@@ -183,7 +180,7 @@ public class Vission implements  {
 	/**
 	 * Method to score if the aspect ratio of the particle appears to match the long side of a tote.
 	 */
-	static double LongSideScore(ParticleReport report)
+	double LongSideScore(ParticleReport report)
 	{
 		return ratioToScore(((report.BoundingRectRight-report.BoundingRectLeft)/(report.BoundingRectBottom-report.BoundingRectTop))/LONG_RATIO);
 	}
@@ -191,7 +188,7 @@ public class Vission implements  {
 	/**
 	 * Method to score if the aspect ratio of the particle appears to match the short side of a tote.
 	 */
-	static double ShortSideScore(ParticleReport report){
+	double ShortSideScore(ParticleReport report){
 		return ratioToScore(((report.BoundingRectRight-report.BoundingRectLeft)/(report.BoundingRectBottom-report.BoundingRectTop))/SHORT_RATIO);
 	}
 
@@ -204,7 +201,7 @@ public class Vission implements  {
 	 * @param isLong Boolean indicating if the target is believed to be the long side of a tote
 	 * @return The estimated distance to the target in feet.
 	 */
-	static double computeDistance (Image image, ParticleReport report, boolean isLong) {
+	double computeDistance (Image image, ParticleReport report, boolean isLong) {
 		double normalizedWidth, targetWidth;
 		NIVision.GetImageSizeResult size;
 
@@ -213,5 +210,10 @@ public class Vission implements  {
 		targetWidth = isLong ? 26.0 : 16.9;
 
 		return  targetWidth/(normalizedWidth*12*Math.tan(VIEW_ANGLE*Math.PI/(180*2)));
+	}
+	@Override
+	public void run() {
+		begin();
+		main();
 	}
 }

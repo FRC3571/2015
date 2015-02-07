@@ -17,7 +17,15 @@ public static Compressor Comp = new Compressor();
 public static Talon FifthWheel = new Talon(4);
 public static Talon LiftMotor = new Talon(5);
 public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
+public static Point point=new Point(0, 0);
 
+public static class Point{
+	public double X,Y;
+	public Point(double x,double y){
+		X=x;
+		Y=y;
+	}
+}
 public static void ArcadeDrive(double X, double Y, double Center){
 	
 	if (Math.abs(Center) > 0.15 || Math.abs(X) > 0) {
