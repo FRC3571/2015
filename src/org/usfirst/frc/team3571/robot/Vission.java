@@ -1,7 +1,4 @@
 package org.usfirst.frc.team3571.robot;
-import edu.wpi.first.wpilibj.image.*;
-import edu.wpi.first.wpilibj.vision.AxisCamera;
-import edu.wpi.first.wpilibj.vision.AxisCamera.Resolution;
 
 import java.lang.Math;
 import java.util.Comparator;
@@ -12,17 +9,11 @@ import com.ni.vision.NIVision.Image;
 import com.ni.vision.NIVision.ImageType;
 
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.AxisCamera;
 
-import java.util.*;
-
-import org.usfirst.frc.team3571.robot.Robot.ParticleReport;
-
-import com.ni.vision.NIVision.ParticleFilterCriteria2;
-
-public class Vission {
+public class Vission implements  {
 	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
 		double PercentAreaToImageArea;
 		double Area;
@@ -41,7 +32,7 @@ public class Vission {
 		{
 			return (int)(r1.Area - r2.Area);
 		}
-	};
+	}
 
 	//Structure to represent the scores for the various tests used for target identification
 	public class Scores {
@@ -49,7 +40,7 @@ public class Vission {
 		double LongAspect;
 		double ShortAspect;
 		double AreaToConvexHullArea;
-	};
+	}
 
 	//Images
 	static Image frame;
