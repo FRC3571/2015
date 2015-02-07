@@ -22,8 +22,13 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	Global.Shifter.set(Value.kReverse);
+    	try{
     	if (!Global.Settings.containsKey("ControlMode")) {
     		Global.Settings.putInt("ControlMode", 0);
+    	}
+    	}
+    	catch (Exception e){
+    		
     	}
     }
 

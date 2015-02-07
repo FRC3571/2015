@@ -74,7 +74,7 @@ public class XboxController {
     }
     public void refresh(){
     	for(int i=0;i<10;i++){
-    		button[i].set(joy.getRawButton(i));
+    		button[i].set(joy.getRawButton(i+1));
     	}
         leftStick();
         rightStick();
