@@ -81,7 +81,7 @@ public class XboxController {
         trigger();
     }
     public XboxController(int i) {
-        joy=new Joystick(i);
+        joy=new Joystick(i+1);
         refresh();
     }
     public void vibrate(RumbleType type,float value){

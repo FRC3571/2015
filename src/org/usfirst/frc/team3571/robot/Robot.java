@@ -16,12 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 public class Robot extends IterativeRobot {
 	//RobotDrive d = new RobotDrive(0,1,2,3); 
 	double driveX=0,driveY=0;
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
     public void robotInit() {
-    	Global.Shifter.set(Value.kReverse);
+    	SmartDashboard.putNumber("test", 0);
+    	//Global.Shifter.set(Value.kReverse);
     	try{
     	if (!Global.Settings.containsKey("ControlMode")) {
     		Global.Settings.putInt("ControlMode", 0);
@@ -30,6 +27,7 @@ public class Robot extends IterativeRobot {
     	catch (Exception e){
     		
     	}
+    	SmartDashboard.putNumber("test", 1);
     }
 
     /**
@@ -56,7 +54,7 @@ public class Robot extends IterativeRobot {
 			Global.driver.refresh();
 			Global.operator.refresh();
 			Teleop.TeleopP();
-			ArduinoCom.main();
+			//ArduinoCom.main();
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
 		}

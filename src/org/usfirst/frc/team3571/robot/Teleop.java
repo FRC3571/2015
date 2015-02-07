@@ -44,10 +44,10 @@ public class Teleop {
 					
 					if (Global.HighGear)
 					{
-						Global.Shifter.set(Value.kReverse);
+						//Global.Shifter.set(Value.kReverse);
 						Global.HighGear = false;
 					} else {
-						Global.Shifter.set(Value.kForward);
+						//Global.Shifter.set(Value.kForward);
 						Global.HighGear = true;
 					}
 				}
