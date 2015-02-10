@@ -2,7 +2,7 @@
 package org.usfirst.frc.team3571.robot;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 
@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	//RobotDrive d = new RobotDrive(0,1,2,3); 
+	//RobotDrive d = new RobotDrive(0,1,2,3);
+	Relay re=new Relay(0);
 	double driveX=0,driveY=0;
     /**
      * This function is run when the robot is first started up and should be
@@ -22,7 +23,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	try {
-	    	Global.Shifter.set(Value.kReverse);
+	    	Global.Shifter.set(DoubleSolenoid.Value.kReverse);
 	    	if (!Global.Settings.containsKey("ControlMode")) {
 	    		Global.Settings.putInt("ControlMode", 0);
 	    	}
@@ -77,8 +78,10 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    	
-    
+    	int d=Global.driver.getDpad();
+    	if(d==0)re.set(Value.kForward);
+    	else if(d==0)re.set(Value.kForward);
+    	else re.set(Value.kOff);
     }
     public void disableInit(){
     	try {
