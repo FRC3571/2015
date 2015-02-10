@@ -19,7 +19,7 @@ public class Teleop {
 	static Axis RightStick=Global.driver.RightStick;
 	static triggers Triggers = Global.driver.Triggers;
 	static buttons DriverButtons=Global.driver.Buttons;
-	static int Dpad = Global.driver.getDpad();
+	static int Dpad = Global.operator.getDpad();
 	static double YSpeed;
 	static double Y;
 	static double X;
@@ -38,7 +38,7 @@ public class Teleop {
 	 public static void TeleopP() throws Exception{
 		 int n=0;
 			try{
-				Dpad = Global.driver.getDpad();
+				Dpad = Global.operator.getDpad();
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
