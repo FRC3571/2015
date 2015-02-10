@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Joystick.RumbleType;
  *
  * @author TomasR
  */
-public class XboxController {
+public class XboxController{
     private final Joystick joy;
     private Button[] button=new Button[10];
     
@@ -49,12 +49,12 @@ public class XboxController {
         public Button B =button[1];
         public Button X =button[2];
         public Button Y =button[3];
-        public Button Start =button[7];
+        public Button LB =button[4];
+        public Button RB =button[5];
         public Button Back =button[6];
+        public Button Start =button[7];
         public Button LeftStick =button[8];
         public Button RightStick =button[9];
-        public Button RB =button[5];
-        public Button LB =button[4];
     	
     }
     class Button{
