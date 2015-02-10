@@ -9,10 +9,20 @@ import edu.wpi.first.wpilibj.Joystick.RumbleType;
  */
 public class XboxController {
     private final Joystick joy;
-    public Axis LeftStick=new Axis(0,0), RightStick=new Axis(0,0);
-    public triggers Triggers=new triggers(0,0);
     private Button[] button=new Button[10];
-    public buttons Buttons=new buttons();
+    
+    /**
+     * Axis state as of the last refresh
+     */
+    public Axis LeftStick=new Axis(0,0), RightStick=new Axis(0,0);
+    /**
+     * trigger states as of the last refresh
+     */
+    public triggers Triggers=new triggers(0,0);
+    /**
+     * Button states as of the last refresh
+     */
+    public buttons Buttons;
     
     public class triggers{
     	public double Right;
@@ -27,14 +37,14 @@ public class XboxController {
     		Combined=Right-Left;
     	}
     }
-    public class Axis{
+    class Axis{
         public double X,Y;
         public Axis(double x,double y){
             X=x;
             Y=y;
         }
     }
-    public class buttons{
+    class buttons{
         public Button A =button[0];
         public Button B =button[1];
         public Button X =button[2];
@@ -47,7 +57,7 @@ public class XboxController {
         public Button LB =button[4];
     	
     }
-    public static class Button{
+    class Button{
         public boolean current=false , last=false,changedDown=false,changedUp=false;
         private void set(boolean c){
         	last=current;
@@ -56,6 +66,10 @@ public class XboxController {
         	changedUp=last && !current;
         }
     }
+    
+    /** 
+     * @return the angle in degrees or -1 if not pressed
+     */
     public int getDpad(){
     	return joy.getPOV(0);
     }
@@ -67,11 +81,16 @@ public class XboxController {
     	RightStick.X=joy.getRawAxis(4);
     	RightStick.Y=joy.getRawAxis(5);
     }
-    public void trigger(){
+    private void trigger(){
         Triggers.Left = joy.getRawAxis(2);
         Triggers.Right = joy.getRawAxis(3);
         Triggers.combine();
     }
+    
+    /**
+     * refreshes all button and axis values
+     * Should be called only once per run
+     */
     public void refresh(){
     	for(int i=0;i<10;i++){
     		button[i].set(joy.getRawButton(i));
@@ -79,11 +98,22 @@ public class XboxController {
         leftStick();
         rightStick();
         trigger();
+        Buttons=new buttons();
     }
+    
+    /**
+     * @param i The controller number
+     */
     public XboxController(int i) {
         joy=new Joystick(i);
         refresh();
     }
+    
+    /**
+     * 
+     * @param type Left or Right rumble
+     * @param value A value from 0 to 1 for the intensity
+     */
     public void vibrate(RumbleType type,float value){
     	joy.setRumble(type, value);
     }

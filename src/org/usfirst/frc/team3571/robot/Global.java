@@ -18,21 +18,26 @@ public static Talon FifthWheel = new Talon(4);
 public static Talon LiftMotor = new Talon(5);
 public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
 public static Point point=new Point(0, 0);
+public static final double fiftWheelToMainRatio=0.32831;
+public static Vission vission=new Vission();
 
-public static class Point{
+static class Point{
 	public double X,Y;
 	public Point(double x,double y){
 		X=x;
 		Y=y;
 	}
 }
+/**
+ * Controlling main 5 wheel drive
+ * @param X Rotation Value
+ * @param Y Forward/Back motion value
+ * @param Center Sideways motion value
+ */
 public static void ArcadeDrive(double X, double Y, double Center){
 	
 	if (Math.abs(Center) > 0.15 || Math.abs(X) > 0) {
-		if (Math.abs(Center+(X*0.32831)) > 1 ){ 
-			Center-=(Center+(X*0.32831))%1;
-		}
-		Global.FifthWheel.set(Center+(X*0.32831));
+		Global.FifthWheel.set(Center+(Math.max(-1,Math.min(1,X*fiftWheelToMainRatio))));
 	} else {
 		Global.FifthWheel.stopMotor();
 	}

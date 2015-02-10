@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 public class Vission implements Runnable {
+	final Global.Point point0=new Global.Point(0,0);
+	Global.Point point=new Global.Point(0,0);
 	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
 		double PercentAreaToImageArea;
 		double Area;
@@ -73,6 +75,8 @@ public class Vission implements Runnable {
 		
 	}
 	public void main(){
+		while(Robot.isAutonomous()){
+			point=point0;
 		//read file in from disk. For this example to run you need to copy image20.jpg from the SampleImages folder to the
 		//directory shown below using FTP or SFTP: http://wpilib.screenstepslive.com/s/4485/m/24166/l/282299-roborio-ftp
 		NIVision.imaqReadFile(frame, "10.35.71.12");
@@ -118,8 +122,13 @@ public class Vission implements Runnable {
 				par.BoundingRectLeft = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_LEFT);
 				par.BoundingRectBottom = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_BOTTOM);
 				par.BoundingRectRight = NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_BOUNDING_RECT_RIGHT);
+				point.X += NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_CENTER_OF_MASS_X);
+				point.Y += NIVision.imaqMeasureParticle(binaryFrame, particleIndex, 0, NIVision.MeasurementType.MT_CENTER_OF_MASS_Y);
 				particles.add(par);
 			}
+			point.X/=numParticles;
+			point.Y/=numParticles;
+			SmartDashboard.putString("ISee", String.format("X=%.3f Y=%.3f",point.X,point.Y));
 			particles.sort(null);
 
 			//This example only scores the largest particle. Extending to score all particles and choosing the desired one is left as an exercise
@@ -144,6 +153,7 @@ public class Vission implements Runnable {
 		}
 
 		Timer.delay(0.005);				// wait for a motor update time
+		}
 	}
 	boolean CompareParticleSizes(ParticleReport particle1, ParticleReport particle2)
 	{
@@ -213,6 +223,7 @@ public class Vission implements Runnable {
 	}
 	@Override
 	public void run() {
+		Global.point=point;
 		begin();
 		main();
 	}

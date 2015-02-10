@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	//RobotDrive d = new RobotDrive(0,1,2,3); 
 	double driveX=0,driveY=0;
 	Camera CameraThread;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.

@@ -18,17 +18,21 @@ public class Teleop {
 	static Axis RightStick=Global.driver.RightStick;
 	static triggers Triggers = Global.driver.Triggers;
 	static buttons DriverButtons=Global.driver.Buttons;
-	static double RightTrigger;
-	static double LeftTrigger;
 	static double YSpeed;
 	static double Y;
 	static double X;
 	static double Strafe;
-	
+
+	/**
+ 	* Teleop initialization code
+ 	*/
 	 public static void TeleopInit(){
 	    	Global.Comp.start();
 	    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
 	 }
+	 /**
+	  * Teleop periodic code
+	  */
 	 public static void TeleopP() throws Exception{
 		 int n=0;
 			try{
@@ -70,7 +74,7 @@ public class Teleop {
 					}	
 				} else if (Global.ControlMode == 1) {
 					if (Math.abs(Triggers.Combined) > 0.05) {
-						Y = Triggers.Combined;
+						Y = -Triggers.Combined;
 					} else {
 						Y = 0;
 					}
