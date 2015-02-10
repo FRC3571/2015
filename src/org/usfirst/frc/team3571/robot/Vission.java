@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.vision.AxisCamera;
 public class Vission implements Runnable {
 	final Global.Point point0=new Global.Point(0,0);
 	Global.Point point=new Global.Point(0,0);
+	public boolean isRunning=false;
+	Vission v=new Vission();
 	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
 		double PercentAreaToImageArea;
 		double Area;
@@ -34,7 +36,10 @@ public class Vission implements Runnable {
 			return (int)(r1.Area - r2.Area);
 		}
 	}
-
+	public void start(){
+		v.start();
+		isRunning=true;
+	}
 	boolean ini=false;
 	//Structure to represent the scores for the various tests used for target identification
 	public class Scores {
@@ -75,7 +80,7 @@ public class Vission implements Runnable {
 		
 	}
 	public void main(){
-		while(Robot.isAutonomous()){
+		while(isRunning){
 			point=point0;
 		//read file in from disk. For this example to run you need to copy image20.jpg from the SampleImages folder to the
 		//directory shown below using FTP or SFTP: http://wpilib.screenstepslive.com/s/4485/m/24166/l/282299-roborio-ftp

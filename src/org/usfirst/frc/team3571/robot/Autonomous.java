@@ -6,7 +6,6 @@ public class Autonomous {
 	 * Autonomous initialization code
 	 */
  public static void AutoInit(){
-	 Global.vission.run();
  }
 	/**
 	 * Autonomous periodic code
