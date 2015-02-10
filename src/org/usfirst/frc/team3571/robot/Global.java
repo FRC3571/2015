@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 
 public class Global {
-public static final double fiftWheelToMainRatio=0.32831;
+public static final double fifthWheelToMainRatio=0.32831;
 public static XboxController driver = new XboxController(0);
 public static XboxController operator = new XboxController(1);
 public static DoubleSolenoid Shifter = new DoubleSolenoid(0,1);
@@ -23,6 +23,8 @@ public static int Direction = 1;
 public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
 public static Point point=new Point(0, 0);
 public static Vission vission=new Vission();
+public static Relay IntakeMotors = new Relay(0);
+public static Relay CameraLights = new Relay(1);
 
 static class Point{
 	public double X,Y;
@@ -40,7 +42,7 @@ static class Point{
 public static void ArcadeDrive(double X, double Y, double Center){
 	
 	if (Math.abs(Center) > 0.15 || Math.abs(X) > 0) {
-		Global.FifthWheel.set(Center+(Math.max(-1,Math.min(1,X*fiftWheelToMainRatio))));
+		Global.FifthWheel.set(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio))));
 	} else {
 		Global.FifthWheel.stopMotor();
 	}

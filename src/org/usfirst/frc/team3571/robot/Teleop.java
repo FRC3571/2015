@@ -5,6 +5,7 @@ import org.usfirst.frc.team3571.robot.XboxController.*;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,6 +19,7 @@ public class Teleop {
 	static Axis RightStick=Global.driver.RightStick;
 	static triggers Triggers = Global.driver.Triggers;
 	static buttons DriverButtons=Global.driver.Buttons;
+	static int Dpad = Global.driver.getDpad();
 	static double YSpeed;
 	static double Y;
 	static double X;
@@ -36,7 +38,7 @@ public class Teleop {
 	 public static void TeleopP() throws Exception{
 		 int n=0;
 			try{
-				
+				Dpad = Global.driver.getDpad();
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
@@ -109,6 +111,22 @@ public class Teleop {
 					Y=0;
 					YSpeed=0;
 				}
+				if(Dpad == 180){
+					Global.IntakeMotors.set(Relay.Value.kReverse);
+				} else if(Dpad == 0) {
+					Global.IntakeMotors.set(Relay.Value.kForward);
+				} else if(Dpad == -1) {
+					Global.IntakeMotors.set(Relay.Value.kOff);
+				}
+				
+				if(DriverButtons.RB.changedDown){
+					if(Global.CameraLights.get() == Relay.Value.kOff){
+						Global.CameraLights.set(Relay.Value.kOn);
+					} else {
+						Global.CameraLights.set(Relay.Value.kOff);
+					}
+				}
+				
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 5;
 			} catch(Exception e) {
