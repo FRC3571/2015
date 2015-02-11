@@ -31,6 +31,9 @@ public class XboxController{
     	public triggers(double r, double l){
     		Right=r;
     		Left=l;
+    		combine();
+    	}
+    	public void combine(){
     		Combined=Right-Left;
     	}
     }
