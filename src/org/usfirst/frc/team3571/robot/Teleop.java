@@ -115,7 +115,7 @@ public class Teleop {
 					Global.IntakeMotors.set(Relay.Value.kReverse);
 				} else if(Dpad == 0) {
 					Global.IntakeMotors.set(Relay.Value.kForward);
-				} else if(Dpad == -1) {
+				} else {
 					Global.IntakeMotors.set(Relay.Value.kOff);
 				}
 				

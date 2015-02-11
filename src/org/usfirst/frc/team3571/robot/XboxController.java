@@ -88,7 +88,7 @@ public class XboxController{
     }
     
     /**
-     * refreshes all button and axis values
+     * Refreshes all button and axis values. 
      * Should be called only once per run
      */
     public void refresh(){
@@ -98,7 +98,6 @@ public class XboxController{
         leftStick();
         rightStick();
         trigger();
-        Buttons=new buttons();
     }
     
     /**
@@ -107,6 +106,7 @@ public class XboxController{
     public XboxController(int i) {
         joy=new Joystick(i);
         refresh();
+        Buttons=new buttons();
     }
     
     /**
