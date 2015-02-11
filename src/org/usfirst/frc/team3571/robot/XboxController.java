@@ -12,7 +12,7 @@ public class XboxController {
     public Axis LeftStick=new Axis(0,0), RightStick=new Axis(0,0);
     public triggers Triggers=new triggers(0,0);
     private Button[] button=new Button[10];
-    public buttons Buttons=new buttons();
+    public buttons Buttons;
     
     public class triggers{
     	public double Right;
@@ -21,9 +21,6 @@ public class XboxController {
     	public triggers(double r, double l){
     		Right=r;
     		Left=l;
-    		combine();
-    	}
-    	private void combine(){
     		Combined=Right-Left;
     	}
     }
@@ -83,6 +80,7 @@ public class XboxController {
     public XboxController(int i) {
         joy=new Joystick(i);
         refresh();
+        Buttons=new buttons();
     }
     public void vibrate(RumbleType type,float value){
     	joy.setRumble(type, value);
