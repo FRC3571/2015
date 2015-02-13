@@ -112,7 +112,7 @@ public class XboxController{
     /**
      * 
      * @param type Left or Right rumble
-     * @param value A value from 0 to 1 for the intensity
+     * @param value A value from 0 to 1 for the intensity 
      */
     public void vibrate(RumbleType type,float value){
     	joy.setRumble(type, value);

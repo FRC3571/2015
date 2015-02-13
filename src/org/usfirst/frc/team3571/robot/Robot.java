@@ -27,6 +27,9 @@ public class Robot extends IterativeRobot {
 	    	if (!Global.Settings.containsKey("ControlMode")) {
 	    		Global.Settings.putInt("ControlMode", 0);
 	    	}
+	    	if (!Global.Settings.containsKey("ToteHeight")) {
+	    		Global.Settings.putInt("ToteHeight", 100);
+	    	}
 	    	CameraThread = new Camera();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());

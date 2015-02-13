@@ -26,6 +26,8 @@ public static Vission vission=new Vission();
 public static Relay IntakeMotors = new Relay(0);
 public static Relay CameraLights = new Relay(1);
 
+
+
 static class Point{
 	public double X,Y;
 	public Point(double x,double y){

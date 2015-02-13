@@ -18,12 +18,16 @@ public class Teleop {
 	static Axis LeftStick=Global.driver.LeftStick;
 	static Axis RightStick=Global.driver.RightStick;
 	static triggers Triggers = Global.driver.Triggers;
-	static buttons DriverButtons=Global.driver.Buttons;
+	static buttons DriverButtons = Global.driver.Buttons;
+	static buttons OperatorButtons = Global.operator.Buttons;
 	static int Dpad = Global.operator.getDpad();
 	static double YSpeed;
 	static double Y;
 	static double X;
 	static double Strafe;
+	static double LiftY = 0;
+	static double ToteStack = 0;
+	static double LiftHeight = 0;
 
 	/**
  	* Teleop initialization code
@@ -43,6 +47,8 @@ public class Teleop {
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
+				SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
+				SmartDashboard.putNumber("Totes", ToteStack);
 				n = 1;
 				if (DriverButtons.X.changedDown)
 				{
@@ -75,11 +81,7 @@ public class Teleop {
 						Y = 0;
 					}	
 				} else if (Global.ControlMode == 1) {
-					if (Math.abs(Triggers.Combined) > 0.05) {
-						Y = -Triggers.Combined;
-					} else {
-						Y = 0;
-					}
+					Y = -Triggers.Combined;
 				}
 				n = 3;
 				
@@ -126,6 +128,23 @@ public class Teleop {
 						Global.CameraLights.set(Relay.Value.kOff);
 					}
 				}
+				
+				LiftY = -Global.operator.Triggers.Combined;
+				
+				if (DriverButtons.Y.changedDown){
+					LiftHeight = Global.Settings.getInt("ToteHeight", 100);
+				}
+				
+				if(Global.LiftEncoder.get() < LiftHeight){
+					LiftY = 0.5;
+				}
+				
+				if(Math.abs(LiftY) > 0){
+					Global.LiftMotor.set(LiftY);
+				} else {
+					Global.LiftMotor.stopMotor();
+				}
+				
 				
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 5;
