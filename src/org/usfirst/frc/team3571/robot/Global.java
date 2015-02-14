@@ -22,7 +22,9 @@ public static Vission vission=new Vission();
 public static Switch BinSwitchBottom = new Switch(2);
 public static Switch BinSwitchTop = new Switch(3);
 public static Switch ToteSwitchBottom = new Switch(4);
-public static Switch ToteSwitchTop = new Switch(5);
+public static Switch ToteSwitchBottomRight = new Switch(5);
+public static Switch ToteSwitchTop = new Switch(6);
+public static Switch ToteSwitchTopRight = new Switch(7);
 
 public static Relay IntakeMotors = new Relay(0);
 public static Relay CameraLights = new Relay(1);
@@ -39,7 +41,8 @@ public static boolean LiftArmActive = false;
 public static RobotDrive Drive = new RobotDrive(0,1,2,3);
 public static Talon FifthWheel = new Talon(4);
 public static Talon BinLift = new Talon(5);
-public static Talon ToteLift = new Talon(6);
+public static Talon ToteLift1 = new Talon(6);
+public static Talon ToteLift2 = new Talon(7);
 
 static class Point{
 	public double X,Y;

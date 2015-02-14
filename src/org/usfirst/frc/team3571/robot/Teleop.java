@@ -49,7 +49,6 @@ public class Teleop {
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
 				SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
-				SmartDashboard.putBoolean("LiftSwitchBottom", Global.LiftSwitchBottom.Current);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
 				n = 1;
 				if (DriverButtons.X.changedDown)
@@ -141,22 +140,31 @@ public class Teleop {
 					}
 				}
 				
-				LiftY = -Global.operator.Triggers.Combined;
-				
 				if(OperatorButtons.Y.changedDown){
-					Global.ToteLiftDirection*=-1;
+					if(Math.abs(Global.ToteLiftDirection) > 0){
+						Global.ToteLiftDirection*=-1;
+					} else {
+						if(Global.ToteSwitchTop.Current){
+							Global.ToteLiftDirection = -1;
+						} else {
+							Global.ToteLiftDirection = 1;
+						}
+					}
 				}
 				
 				if(Global.ToteSwitchTop.Current || Global.ToteSwitchBottom.Current){
 					Global.ToteLiftDirection = 0;
 				}
 				
-				if(Global.ToteLiftDirection > 0){
-					Global.ToteLift.set(Global.ToteLiftDirection);
+				if(Math.abs(Global.ToteLiftDirection) > 0){
+					Global.ToteLift1.set(Global.ToteLiftDirection);
+					Global.ToteLift2.set(Global.ToteLiftDirection);
 				} else {
-					Global.ToteLift.stopMotor();
+					Global.ToteLift1.stopMotor();
+					Global.ToteLift2.stopMotor();
 				}
 				
+				LiftY = -Global.operator.Triggers.Combined;
 				if(LiftY > 0){
 					Global.BinLift.set(LiftY);
 				} else {
