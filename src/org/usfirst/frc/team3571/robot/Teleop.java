@@ -28,6 +28,8 @@ public class Teleop {
 	static double LiftY = 0;
 	static double ToteStack = 0;
 	static double LiftHeight = 0;
+	static boolean GoingDown = false;
+	static boolean GoingUp = false;
 
 	/**
  	* Teleop initialization code
@@ -49,6 +51,8 @@ public class Teleop {
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
 				SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
+				SmartDashboard.putBoolean("LiftSwitchBottom", Global.LiftSwitchBottom.Current);
+				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
 				n = 1;
 				if (DriverButtons.X.changedDown)
 				{
@@ -129,7 +133,42 @@ public class Teleop {
 					}
 				}
 				
+				if(OperatorButtons.X.changedDown){
+					if(!Global.LiftArmActive){
+						Global.LiftArm.set(Value.kForward);
+						Global.LiftArmActive = true;
+					} else {
+						Global.LiftArm.set(Value.kReverse);
+						Global.LiftArmActive = false;
+					}
+				}
+				
 				LiftY = -Global.operator.Triggers.Combined;
+				if(Math.abs(LiftY) > 0){
+					GoingUp = false;
+					GoingDown = false;
+					LiftHeight = 0;
+				}
+				
+				if(OperatorButtons.Y.changedDown){
+					LiftHeight = Global.LiftEncoder.get()+Global.Settings.getInt("ToteHeight", 100);
+					GoingUp = true;
+				}
+				
+				if(OperatorButtons.A.changedDown){
+					LiftHeight = 0;
+					GoingDown = true;
+				}
+				
+				if(Global.LiftEncoder.get() < LiftHeight && GoingUp){
+					LiftY = 0.7;
+				} else {
+					GoingUp = false;
+				}
+				
+				if(GoingDown && !Global.LiftSwitchBottom.Current){
+					LiftY = -0.7;
+				}
 				
 				if(LiftY > 0 || (LiftY < 0 && !Global.LiftSwitchBottom.Current)){
 					Global.LiftMotor.set(LiftY);
@@ -137,7 +176,10 @@ public class Teleop {
 					Global.LiftMotor.stopMotor();
 				}
 				
-				
+				if(Global.LiftSwitchBottom.Pressed){
+					GoingDown = false;
+					Global.LiftEncoder.reset();
+				}
 				
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 5;
