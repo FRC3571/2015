@@ -131,19 +131,12 @@ public class Teleop {
 				
 				LiftY = -Global.operator.Triggers.Combined;
 				
-				if (DriverButtons.Y.changedDown){
-					LiftHeight = Global.Settings.getInt("ToteHeight", 100);
-				}
-				
-				if(Global.LiftEncoder.get() < LiftHeight){
-					LiftY = 0.5;
-				}
-				
-				if(Math.abs(LiftY) > 0){
+				if(LiftY > 0 || (LiftY < 0 && !Global.LiftSwitchBottom.Current)){
 					Global.LiftMotor.set(LiftY);
 				} else {
 					Global.LiftMotor.stopMotor();
 				}
+				
 				
 				
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);

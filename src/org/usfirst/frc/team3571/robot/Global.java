@@ -25,6 +25,8 @@ public static Point point=new Point(0, 0);
 public static Vission vission=new Vission();
 public static Relay IntakeMotors = new Relay(0);
 public static Relay CameraLights = new Relay(1);
+public static Switch LiftSwitchBottom = new Switch(2);
+
 
 
 
