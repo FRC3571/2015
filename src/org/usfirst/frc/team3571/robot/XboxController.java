@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.Joystick.RumbleType;
 public class XboxController{
     private final Joystick joy;
     private Button[] button=new Button[10];
-    
     /**
      * Axis state as of the last refresh
      */
@@ -92,8 +91,8 @@ public class XboxController{
      * Should be called only once per run
      */
     public void refresh(){
-    	for(int i=0;i<10;i++){
-    		button[i].set(joy.getRawButton(i));
+    	for(int i=1;i<11;i++){
+    		button[i-1].set(joy.getRawButton(i));
     	}
         leftStick();
         rightStick();
@@ -105,6 +104,9 @@ public class XboxController{
      */
     public XboxController(int i) {
         joy=new Joystick(i);
+        for(int ii=0;ii<10;ii++){
+        	button[ii]=new Button();
+        }
         refresh();
         Buttons=new buttons();
     }
@@ -118,4 +120,3 @@ public class XboxController{
     	joy.setRumble(type, value);
     }
 }
-
