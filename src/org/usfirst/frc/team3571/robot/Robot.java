@@ -145,7 +145,7 @@ public class Robot extends IterativeRobot {
 	    	Global.Settings.save();
 			SmartDashboard.putString("error","");
 			Global.Comp.stop();
-			Global.vission.isRunning=false;
+			//Global.vission.isRunning=false;
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}

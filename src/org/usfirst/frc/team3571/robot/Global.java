@@ -17,7 +17,7 @@ public static Preferences Settings = Preferences.getInstance();
 public static Compressor Comp = new Compressor();
 public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
 public static Point point=new Point(0, 0);
-public static Vission vission=new Vission();
+//public static Vission vission=new Vission();
 
 public static Switch BinSwitchBottom = new Switch(2);
 public static Switch BinSwitchTop = new Switch(3);
