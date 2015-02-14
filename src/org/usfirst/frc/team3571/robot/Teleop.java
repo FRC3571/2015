@@ -28,8 +28,6 @@ public class Teleop {
 	static double LiftY = 0;
 	static double ToteStack = 0;
 	static double LiftHeight = 0;
-	static boolean GoingDown = false;
-	static boolean GoingUp = false;
 
 	/**
  	* Teleop initialization code
@@ -144,41 +142,25 @@ public class Teleop {
 				}
 				
 				LiftY = -Global.operator.Triggers.Combined;
-				if(Math.abs(LiftY) > 0){
-					GoingUp = false;
-					GoingDown = false;
-					LiftHeight = 0;
-				}
 				
 				if(OperatorButtons.Y.changedDown){
-					LiftHeight = Global.LiftEncoder.get()+Global.Settings.getInt("ToteHeight", 100);
-					GoingUp = true;
+					Global.ToteLiftDirection*=-1;
 				}
 				
-				if(OperatorButtons.A.changedDown){
-					LiftHeight = 0;
-					GoingDown = true;
+				if(Global.ToteSwitchTop.Current || Global.ToteSwitchBottom.Current){
+					Global.ToteLiftDirection = 0;
 				}
 				
-				if(Global.LiftEncoder.get() < LiftHeight && GoingUp){
-					LiftY = 0.7;
+				if(Global.ToteLiftDirection > 0){
+					Global.ToteLift.set(Global.ToteLiftDirection);
 				} else {
-					GoingUp = false;
+					Global.ToteLift.stopMotor();
 				}
 				
-				if(GoingDown && !Global.LiftSwitchBottom.Current){
-					LiftY = -0.7;
-				}
-				
-				if(LiftY > 0 || (LiftY < 0 && !Global.LiftSwitchBottom.Current)){
-					Global.LiftMotor.set(LiftY);
+				if(LiftY > 0){
+					Global.BinLift.set(LiftY);
 				} else {
-					Global.LiftMotor.stopMotor();
-				}
-				
-				if(Global.LiftSwitchBottom.Pressed){
-					GoingDown = false;
-					Global.LiftEncoder.reset();
+					Global.BinLift.stopMotor();
 				}
 				
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
