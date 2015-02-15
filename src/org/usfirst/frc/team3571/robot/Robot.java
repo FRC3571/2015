@@ -76,9 +76,7 @@ public class Robot extends IterativeRobot {
 			Global.driver.refresh();
 			Global.operator.refresh();
 			Global.BinSwitchBottom.refresh();
-			Global.BinSwitchTop.refresh();
-			Global.ToteSwitchBottom.refresh();
-			Global.ToteSwitchTop.refresh();
+			Global.ToteLift.Refresh();
 			Teleop.TeleopP();
 			ArduinoCom.main();
 		} catch (Exception e) {
@@ -86,54 +84,26 @@ public class Robot extends IterativeRobot {
 		}
     }
     
-    /**
-     * This function is called periodically during test mode
-     */
+    public void testInit(){
+    	Global.ToteLift.set(-1);
+    }
     public void testPeriodic() {
     	try {
+    		Global.ToteLift.Refresh();
     		SmartDashboard.putNumber("RightTimer", TopRightTimer.get());
     		SmartDashboard.putNumber("LeftTimer", TopLeftTimer.get());
-    		if(Global.ToteSwitchBottom.Current){
+    		SmartDashboard.putNumber("difTimer",TopLeftTimer.get()-TopRightTimer.get());
+    		if(Global.ToteLift.isMoving==0 && Global.ToteLift.ToteSwitchBottomLeft.Current){
     			TopLeftTimer.start();
     			TopRightTimer.start();
-    			Global.ToteLift1.set(1);
-				Global.ToteLift2.set(1);
+    			Global.ToteLift.set(1);
     		} 
-    		
-    		if(!Global.ToteSwitchTop.Current){
-    			Global.ToteLift1.set(1);
-    		}
-    		if(Global.ToteSwitchTop.Pressed){
-    			Global.ToteLift1.stopMotor();
+    		if(Global.ToteLift.isMoving%2!=1){
     			TopLeftTimer.stop();
-    			Reset+=1;
     		}
-    		if(!Global.ToteSwitchTopRight.Current){
-    			Global.ToteLift2.set(1);
-    		}
-    		if(Global.ToteSwitchTopRight.Pressed){
-    			Global.ToteLift2.stopMotor();
+    		if(Global.ToteLift.isMoving>=2){
     			TopRightTimer.stop();
-    			Reset+=1;
     		}
-    		
-    		if(Reset==2){
-    			if(!Global.ToteSwitchBottom.Current){
-	    			Global.ToteLift1.set(-1);
-    			}
-    			if(!Global.ToteSwitchBottom.Current){
-					Global.ToteLift2.set(-1);
-    			}
-    			if(Global.ToteSwitchBottom.Current&&Global.ToteSwitchBottomRight.Current){
-    				TopLeftTimer.reset();
-    				TopRightTimer.reset();
-    				Reset = 0;
-    				TopLeftTimer.start();
-    				TopRightTimer.start();
-    				Global.ToteLift1.set(1);
-    				Global.ToteLift2.set(1);
-    			}
-    		} 
     		
     	} catch (Exception e) {
     		

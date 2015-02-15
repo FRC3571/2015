@@ -141,27 +141,7 @@ public class Teleop {
 				}
 				
 				if(OperatorButtons.Y.changedDown){
-					if(Math.abs(Global.ToteLiftDirection) > 0){
-						Global.ToteLiftDirection*=-1;
-					} else {
-						if(Global.ToteSwitchTop.Current){
-							Global.ToteLiftDirection = -1;
-						} else {
-							Global.ToteLiftDirection = 1;
-						}
-					}
-				}
-				
-				if(Global.ToteSwitchTop.Current || Global.ToteSwitchBottom.Current){
-					Global.ToteLiftDirection = 0;
-				}
-				
-				if(Math.abs(Global.ToteLiftDirection) > 0){
-					Global.ToteLift1.set(Global.ToteLiftDirection);
-					Global.ToteLift2.set(Global.ToteLiftDirection);
-				} else {
-					Global.ToteLift1.stopMotor();
-					Global.ToteLift2.stopMotor();
+					Global.ToteLift.set((Global.ToteLift.ToteLiftUp?-1:1));
 				}
 				
 				LiftY = -Global.operator.Triggers.Combined;
