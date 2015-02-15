@@ -20,7 +20,7 @@ public class Teleop {
 	static triggers Triggers = Global.driver.Triggers;
 	static buttons DriverButtons = Global.driver.Buttons;
 	static buttons OperatorButtons = Global.operator.Buttons;
-	static int Dpad = Global.operator.getDpad();
+	static int OperatorDpad = -1;
 	static double YSpeed;
 	static double Y;
 	static double X;
@@ -42,7 +42,7 @@ public class Teleop {
 	 public static void TeleopP() throws Exception{
 		 int n=0;
 			try{
-				Dpad = Global.operator.getDpad();
+				OperatorDpad = Global.operator.getDpad();
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
@@ -114,9 +114,9 @@ public class Teleop {
 					Y=0;
 					YSpeed=0;
 				}
-				if(Dpad == 180){
+				if(OperatorDpad == 180){
 					Global.IntakeMotors.set(Relay.Value.kReverse);
-				} else if(Dpad == 0) {
+				} else if(OperatorDpad == 0) {
 					Global.IntakeMotors.set(Relay.Value.kForward);
 				} else {
 					Global.IntakeMotors.set(Relay.Value.kOff);
@@ -140,9 +140,9 @@ public class Teleop {
 					}
 				}
 				
-				if(OperatorButtons.Y.changedDown){
-					Global.ToteLift.set((Global.ToteLift.ToteLiftUp?-1:1));
-				}
+				if(OperatorButtons.RB.changedDown) Global.ToteLift.set(1);
+				if(OperatorButtons.LB.changedDown) Global.ToteLift.set(-1);
+				if(OperatorButtons.LeftStick.changedDown) Global.ToteLift.stop();
 				
 				LiftY = -Global.operator.Triggers.Combined;
 				if(LiftY > 0){

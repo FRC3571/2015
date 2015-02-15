@@ -27,6 +27,17 @@ public class XboxController {
     		Combined=Right-Left;
     	}
     }
+    public class POV{
+    	public boolean Up=false, Down=false, Left = false, Right=false;
+    	public int degrees;
+    	private void set(int degree){
+    		Up=(degree==315 || degree==0 || degree==45);
+    		Down=(degree<=225 && degree>=135);
+    		Left=(degree<=315 && degree>=225);
+    		Right=(degree<=135 && degree>=45);
+    		degrees=degree;
+    	}
+    }
     public class Axis{
         public double X,Y;
         public Axis(double x,double y){
@@ -39,12 +50,12 @@ public class XboxController {
         public Button B =button[1];
         public Button X =button[2];
         public Button Y =button[3];
-        public Button Start =button[7];
+        public Button LB =button[4];
+        public Button RB =button[5];
         public Button Back =button[6];
+        public Button Start =button[7];
         public Button LeftStick =button[8];
         public Button RightStick =button[9];
-        public Button RB =button[5];
-        public Button LB =button[4];
     	
     }
     public static class Button{

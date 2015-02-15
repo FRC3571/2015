@@ -65,8 +65,8 @@ public static void ArcadeDrive(double X, double Y, double Center){
 }
 	public static class ToteLift{
 		public static Switch ToteSwitchBottomLeft = new Switch(3);
-		public static Switch ToteSwitchBottomRight = new Switch(4);
-		public static Switch ToteSwitchTopLeft = new Switch(5);
+		public static Switch ToteSwitchTopLeft = new Switch(4);
+		public static Switch ToteSwitchBottomRight = new Switch(5);
 		public static Switch ToteSwitchTopRight = new Switch(6);
 		private static Talon ToteLift1 = new Talon(6);
 		private static Talon ToteLift2 = new Talon(7);
@@ -80,7 +80,7 @@ public static void ArcadeDrive(double X, double Y, double Center){
 			speed1=speed2=0;
 		}
 		public static void set(double speed){
-			ToteLift1.set(speed);
+			ToteLift1.set(-speed);
 			ToteLift2.set(speed);
 			speed2=speed1=speed;
 			ToteLiftUp=speed>0;
