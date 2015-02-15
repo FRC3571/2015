@@ -5,25 +5,92 @@
 	3 - Rear Right Drive Motor
 	4 - Center Drive Motor
 	5 - Lift Motor Controller
-	6 - 
-	7 - 
+	6 - Left Tote Lift Motor
+	7 - Right Tote Lift Motor
 	8 - 
 	9 -
 	
 ( Digital )
 	0 - Rotational Lift Encoder Channel A
 	1 - Rotational Lift Encoder Channel B
+	2 - Bin Lift Bottom End Stop
+	3 - Bottom Left Tote Lift End Stop
+	4 - Top Left Tote Lift End Stop
+	5 - Bottom Right Tote Lift End Stop
+	6 - Top Right Tote Lift End Stop
+	7 - 
+	8 - 
+	9 - 
+	
+( Relay )
+	0 - Intake Motors
+	1 - Camera Light
 	2 - 
 	3 - 
+	
+( Solenoid )
+	0 - Shifter
+	1 - Shifter
+	2 - Claw
+	3 - Claw
 	4 - 
 	5 - 
 	6 - 
 	7 - 
-	8 - 
-	9 - 
 	
 ( Driver Station USB ) 
 	0 - Driver Controller
 	1 - Operator Controller 
 	
+( Driver Controller )
+	A -
+	B - Stop
+	X - Shifter
+	Y -
+	LB -
+	RB - Camera Lights
+	Back -
+	Start - Control Mode
+	Left Stick - 
+	Right Stick -
+
+( Driver Axis )
+	LeftX - Bot Rotation
+	LeftY - Bot Forward/Backward if in drivemode 0
+	RightX - Bot Side
+	RightY -
+	TrigerLeft - Bot Backward if in drivemode 1
+	TrigerRight - Bot Forward if in drivemode 1
+	
+( Driver POV )
+	Up -
+	Down -
+	Left -
+	Right -
+	
+( Operator Controller )
+	A -
+	B -
+	X - Claw
+	Y - 
+	LB -
+	RB - Tote Lift Up
+	Back - Tote Lift Down
+	Start -
+	Left Stick - Stop Tote Lift
+	Right Stick -
+	
+( Operator Axis )
+	LeftX - 
+	LeftY - 
+	RightX - 
+	RightY -
+	TrigerLeft - Bin Lift Down
+	TrigerRight - Bin Lift Up
+	
+( Operator POV )
+	Up -
+	Down -
+	Left -
+	Right -
 	
