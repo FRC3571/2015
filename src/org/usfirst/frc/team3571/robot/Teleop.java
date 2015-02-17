@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3571.robot;
 
-import org.usfirst.frc.team3571.robot.Global.Intake.Direction;
+import org.usfirst.frc.team3571.robot.Global.Intake;
+import org.usfirst.frc.team3571.robot.Global.Intake.IntakeDirection;
 import org.usfirst.frc.team3571.robot.XboxController.*;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -115,21 +116,9 @@ public class Teleop {
 					Y=0;
 					YSpeed=0;
 				}
+				
+				Intake.set(OperatorDpad);
 				/*
-				if(OperatorDpad.degrees==0){
-					Global.Intake.set(Direction.Up);
-				} else if(OperatorDpad.degrees==180) {
-					Global.Intake.set(Direction.Down);
-				}
-				else if(OperatorDpad.degrees==270){
-					Global.Intake.set(Direction.Left);
-				}
-				else if(OperatorDpad.degrees==90){
-					Global.Intake.set(Direction.Right);
-				}
-				else {
-					Global.Intake.stop();
-				}*/
 				if(OperatorDpad.degrees==180){
 					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kForward);
 					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kReverse);
@@ -140,7 +129,7 @@ public class Teleop {
 				else {
 					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
 					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
-				}
+				}*/
 				n=5;
 				
 				if(OperatorButtons.X.changedDown){

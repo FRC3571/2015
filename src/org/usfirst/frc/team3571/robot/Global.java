@@ -63,35 +63,48 @@ public static void ArcadeDrive(double X, double Y, double Center){
 	}
 }
 public static class Intake{
-	public static class Direction{
-		public Direction(Value R, Value L) {
+	public static enum IntakeDirection{
+		Off(Value.kOff,Value.kOff),
+		Left(Value.kForward,Value.kForward),
+		Up(Value.kReverse,Value.kForward),
+		Down(Value.kForward,Value.kReverse),
+		Right(Value.kReverse,Value.kReverse),
+		UpLeft(Value.kOff,Value.kForward),
+		UpRight(Value.kReverse,Value.kOff),
+		DownLeft(Value.kOff,Value.kReverse),
+		DownRight(Value.kForward,Value.kOff);
+		public final Value r,l;
+		private IntakeDirection(Value L, Value R){
+			l=L;
 			r=R;
-			r=L;
 		}
-		public Value r,l;
-		public static Direction Left=new Direction(Value.kForward,Value.kReverse);
-		public static Direction Up=new Direction(Value.kForward,Value.kForward);
-		public static Direction Down=new Direction(Value.kReverse,Value.kReverse);
-		public static Direction Right=new Direction(Value.kReverse,Value.kForward);
-		/*public static Direction UpLeft=new Direction(Value.kReverse,Value.kForward);
-		public static Direction UpRight=new Direction(Value.kReverse,Value.kForward);
-		public static Direction DownLeft=new Direction(Value.kReverse,Value.kForward);
-		public static Direction DownRight=new Direction(Value.kReverse,Value.kForward);*/
 	}
 	public static Relay IntakeMotorsL = new Relay(0);
 	public static Relay IntakeMotorsR = new Relay(1);
-	public static void set(Direction d){
+	public static void set(IntakeDirection d){
 		IntakeMotorsL.set(d.l);
 		IntakeMotorsR.set(d.r);
 	}
-	/*public static void set(XboxController.POV pov){
-		Direction dir;
-		if(pov.Up){
-			if(pov.Left)dir=Direction.Up; 
+	static int LastPOV=-1;
+	public static void set(XboxController.POV pov){
+		if(pov.degrees!=LastPOV){
+			LastPOV=pov.degrees;
+			IntakeDirection dir;
+			if(pov.Up){
+				if(pov.Left)dir=IntakeDirection.UpLeft;
+				else if(pov.Right)dir=IntakeDirection.UpRight;
+				else dir=IntakeDirection.Up;
+			}
+			else if(pov.Down){
+				if(pov.Left)dir=IntakeDirection.DownLeft;
+				else if(pov.Right)dir=IntakeDirection.DownRight;
+				else dir=IntakeDirection.Down;
+			}
+			else dir=IntakeDirection.Off;
+			IntakeMotorsL.set(dir.l);
+			IntakeMotorsR.set(dir.r);
 		}
-		IntakeMotorsL.set(d.l);
-		IntakeMotorsR.set(d.r);
-	}*/
+	}
 	public static void stop(){
 		IntakeMotorsL.set(Value.kOff);
 		IntakeMotorsR.set(Value.kOff);
