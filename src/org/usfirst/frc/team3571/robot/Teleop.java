@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3571.robot;
 
+import org.usfirst.frc.team3571.robot.Global.Intake.Direction;
 import org.usfirst.frc.team3571.robot.XboxController.*;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -20,7 +21,7 @@ public class Teleop {
 	static triggers Triggers = Global.driver.Triggers;
 	static buttons DriverButtons = Global.driver.Buttons;
 	static buttons OperatorButtons = Global.operator.Buttons;
-	static int OperatorDpad = -1;
+	static POV OperatorDpad = Global.operator.DPad;
 	static double YSpeed;
 	static double Y;
 	static double X;
@@ -42,7 +43,6 @@ public class Teleop {
 	 public static void TeleopP() throws Exception{
 		 int n=0;
 			try{
-				OperatorDpad = Global.operator.getDpad();
 				for(int i=0;i<4;i++){
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
@@ -50,6 +50,7 @@ public class Teleop {
 				SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
+				SmartDashboard.putNumber("Dpad", OperatorDpad.degrees);
 				n = 1;
 				if (DriverButtons.X.changedDown)
 				{
@@ -73,12 +74,12 @@ public class Teleop {
 				X = LeftStick.X;
 				Strafe = RightStick.X;
 				
-				if (Math.abs(X) <= 0.15){
+				if (Math.abs(X) <= 0.2){
 					X = 0;
 				}	
 				
 				if (Global.ControlMode == 0) {
-					if (Math.abs(Y) <= 0.15){
+					if (Math.abs(Y) <= 0.2){
 						Y = 0;
 					}	
 				} else if (Global.ControlMode == 1) {
@@ -114,21 +115,33 @@ public class Teleop {
 					Y=0;
 					YSpeed=0;
 				}
-				if(OperatorDpad == 180){
-					Global.IntakeMotors.set(Relay.Value.kReverse);
-				} else if(OperatorDpad == 0) {
-					Global.IntakeMotors.set(Relay.Value.kForward);
-				} else {
-					Global.IntakeMotors.set(Relay.Value.kOff);
+				/*
+				if(OperatorDpad.degrees==0){
+					Global.Intake.set(Direction.Up);
+				} else if(OperatorDpad.degrees==180) {
+					Global.Intake.set(Direction.Down);
 				}
-				
-				if(DriverButtons.RB.changedDown){
-					if(Global.CameraLights.get() == Relay.Value.kOff){
-						Global.CameraLights.set(Relay.Value.kOn);
-					} else {
-						Global.CameraLights.set(Relay.Value.kOff);
-					}
+				else if(OperatorDpad.degrees==270){
+					Global.Intake.set(Direction.Left);
 				}
+				else if(OperatorDpad.degrees==90){
+					Global.Intake.set(Direction.Right);
+				}
+				else {
+					Global.Intake.stop();
+				}*/
+				if(OperatorDpad.degrees==180){
+					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kForward);
+					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kReverse);
+				} else if(OperatorDpad.degrees==0) {
+					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kReverse);
+					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kForward);
+				}
+				else {
+					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
+					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
+				}
+				n=5;
 				
 				if(OperatorButtons.X.changedDown){
 					if(!Global.LiftArmActive){
@@ -152,9 +165,9 @@ public class Teleop {
 				}
 				
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
-				n = 5;
+				n = 6;
 			} catch(Exception e) {
-				throw new Exception("Teleop "+n);
+				throw new Exception("Teleop "+n+" "+e.getMessage());
 			}
 	 }
 }

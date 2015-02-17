@@ -13,6 +13,8 @@ public class XboxController {
     public triggers Triggers=new triggers(0,0);
     private Button[] button=new Button[10];
     public buttons Buttons;
+    public POV DPad = new POV();
+    
     
     public class triggers{
     	public double Right;
@@ -29,7 +31,7 @@ public class XboxController {
     }
     public class POV{
     	public boolean Up=false, Down=false, Left = false, Right=false;
-    	public int degrees;
+    	public int degrees=-1;
     	private void set(int degree){
     		Up=(degree==315 || degree==0 || degree==45);
     		Down=(degree<=225 && degree>=135);
@@ -67,8 +69,8 @@ public class XboxController {
         	changedUp=last && !current;
         }
     }
-    public int getDpad(){
-    	return joy.getPOV(0);
+    private void getDpad(){
+    	DPad.set(joy.getPOV(0));
     }
     private void leftStick(){
     	LeftStick.X=joy.getRawAxis(0);
@@ -90,6 +92,7 @@ public class XboxController {
         leftStick();
         rightStick();
         trigger();
+        getDpad();
     }
     public XboxController(int i) {
         joy=new Joystick(i);

@@ -5,6 +5,7 @@ import java.util.concurrent.FutureTask;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.Relay.Value;
 
 public class Global {
 public static XboxController driver = new XboxController(0);
@@ -21,8 +22,6 @@ public static Point point=new Point(0, 0);
 
 public static Switch BinSwitchBottom = new Switch(2);
 
-public static Relay IntakeMotors = new Relay(0);
-public static Relay CameraLights = new Relay(1);
 
 public static final double fifthWheelToMainRatio=0.32831;
 public static int ControlMode = 0;
@@ -51,7 +50,7 @@ static class Point{
  */
 public static void ArcadeDrive(double X, double Y, double Center){
 	
-	if (Math.abs(Center) > 0.15 || Math.abs(X) > 0) {
+	if (Math.abs(Center) > 0.2 || Math.abs(X) > 0) {
 		Global.FifthWheel.set(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio))));
 	} else {
 		Global.FifthWheel.stopMotor();
@@ -61,6 +60,41 @@ public static void ArcadeDrive(double X, double Y, double Center){
 	}
 	else {
 		Drive.stopMotor();
+	}
+}
+public static class Intake{
+	public static class Direction{
+		public Direction(Value R, Value L) {
+			r=R;
+			r=L;
+		}
+		public Value r,l;
+		public static Direction Left=new Direction(Value.kForward,Value.kReverse);
+		public static Direction Up=new Direction(Value.kForward,Value.kForward);
+		public static Direction Down=new Direction(Value.kReverse,Value.kReverse);
+		public static Direction Right=new Direction(Value.kReverse,Value.kForward);
+		/*public static Direction UpLeft=new Direction(Value.kReverse,Value.kForward);
+		public static Direction UpRight=new Direction(Value.kReverse,Value.kForward);
+		public static Direction DownLeft=new Direction(Value.kReverse,Value.kForward);
+		public static Direction DownRight=new Direction(Value.kReverse,Value.kForward);*/
+	}
+	public static Relay IntakeMotorsL = new Relay(0);
+	public static Relay IntakeMotorsR = new Relay(1);
+	public static void set(Direction d){
+		IntakeMotorsL.set(d.l);
+		IntakeMotorsR.set(d.r);
+	}
+	/*public static void set(XboxController.POV pov){
+		Direction dir;
+		if(pov.Up){
+			if(pov.Left)dir=Direction.Up; 
+		}
+		IntakeMotorsL.set(d.l);
+		IntakeMotorsR.set(d.r);
+	}*/
+	public static void stop(){
+		IntakeMotorsL.set(Value.kOff);
+		IntakeMotorsR.set(Value.kOff);
 	}
 }
 	public static class ToteLift{
