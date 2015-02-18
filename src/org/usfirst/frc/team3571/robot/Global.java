@@ -50,7 +50,7 @@ static class Point{
  */
 public static void ArcadeDrive(double X, double Y, double Center){
 	
-	if (Math.abs(Center) > 0.2 || Math.abs(X) > 0) {
+	if (Math.abs(Center) > 0 || Math.abs(X) > 0) {
 		Global.FifthWheel.set(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio))));
 	} else {
 		Global.FifthWheel.stopMotor();

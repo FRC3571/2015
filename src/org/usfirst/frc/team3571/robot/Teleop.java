@@ -51,7 +51,6 @@ public class Teleop {
 				SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
-				SmartDashboard.putNumber("Dpad", OperatorDpad.degrees);
 				n = 1;
 				if (DriverButtons.X.changedDown)
 				{
@@ -118,18 +117,7 @@ public class Teleop {
 				}
 				
 				Intake.set(OperatorDpad);
-				/*
-				if(OperatorDpad.degrees==180){
-					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kForward);
-					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kReverse);
-				} else if(OperatorDpad.degrees==0) {
-					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kReverse);
-					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kForward);
-				}
-				else {
-					Global.Intake.IntakeMotorsL.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
-					Global.Intake.IntakeMotorsR.set(edu.wpi.first.wpilibj.Relay.Value.kOff);
-				}*/
+				
 				n=5;
 				
 				if(OperatorButtons.X.changedDown){
@@ -147,12 +135,12 @@ public class Teleop {
 				if(OperatorButtons.LeftStick.changedDown) Global.ToteLift.stop();
 				
 				LiftY = -Global.operator.Triggers.Combined;
-				if(LiftY > 0){
+				if(Math.abs(LiftY) > 0){
 					Global.BinLift.set(LiftY);
 				} else {
 					Global.BinLift.stopMotor();
 				}
-				
+				if(Math.abs(Strafe)<0.2)Strafe=0;
 				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 6;
 			} catch(Exception e) {
