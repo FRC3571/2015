@@ -78,7 +78,6 @@ public class Robot extends IterativeRobot {
 			Global.BinSwitchBottom.refresh();
 			Global.ToteLift.Refresh();
 			Teleop.TeleopP();
-			ArduinoCom.main();
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
 		}
