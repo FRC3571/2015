@@ -37,6 +37,7 @@ public class Teleop {
 	 public static void TeleopInit(){
 	    	Global.Comp.start();
 	    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
+			Global.MiddleWheel.set(Value.kReverse);
 	 }
 	 /**
 	  * Teleop periodic code
@@ -52,6 +53,10 @@ public class Teleop {
 				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
 				n = 1;
+				if(DriverButtons.LeftStick.changedDown){
+					if(Global.MiddleWheel.get() ==Value.kReverse) Global.MiddleWheel.set(Value.kForward);
+					else Global.MiddleWheel.set(Value.kReverse);
+				}
 				if (DriverButtons.X.changedDown)
 				{
 					Countdown = 5;

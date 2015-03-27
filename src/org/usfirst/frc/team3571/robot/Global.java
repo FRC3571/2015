@@ -12,7 +12,8 @@ public static XboxController driver = new XboxController(0);
 public static XboxController operator = new XboxController(1);
 
 public static DoubleSolenoid Shifter = new DoubleSolenoid(0,1);
-public static DoubleSolenoid LiftArm = new DoubleSolenoid(2,3);
+public static DoubleSolenoid MiddleWheel = new DoubleSolenoid(2,3);
+public static DoubleSolenoid LiftArm = new DoubleSolenoid(4,5);
 
 public static Preferences Settings = Preferences.getInstance();
 public static Compressor Comp = new Compressor();

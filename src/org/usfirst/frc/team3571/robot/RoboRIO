@@ -51,7 +51,7 @@
 	RB - 
 	Back -
 	Start - Control Mode
-	Left Stick - 
+	Left Stick - Middle Wheel Lift
 	Right Stick -
 
 ( Driver Axis )
@@ -89,8 +89,8 @@
 	TrigerRight - Bin Lift Up
 	
 ( Operator POV )
-	Up -
-	Down -
-	Left -
-	Right -
+	Up - Intake OUT
+	Down - Intake IN
+	Left - Intake CounterClockwise
+	Right - Intake Clockwise
 	

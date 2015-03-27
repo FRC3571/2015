@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
     	try {
     		Teleop.TeleopInit();
-    		CameraThread.teleOp();
+    		//CameraThread.teleOp();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
