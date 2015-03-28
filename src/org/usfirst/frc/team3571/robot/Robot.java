@@ -33,6 +33,9 @@ public class Robot extends IterativeRobot {
 	    	if (!Global.Settings.containsKey("ToteHeight")) {
 	    		Global.Settings.putInt("ToteHeight", 100);
 	    	}
+	    	if (!Global.Settings.containsKey("ToteSpeed")) {
+	    		Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
+	    	}
 	    	//CameraThread = new Camera();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
@@ -111,6 +114,7 @@ public class Robot extends IterativeRobot {
     }
     public void disableInit(){
     	try {
+			Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
 	    	Global.Settings.putInt("ControlMode", Global.ControlMode);
 	    	Global.Settings.save();
 			SmartDashboard.putString("error","");

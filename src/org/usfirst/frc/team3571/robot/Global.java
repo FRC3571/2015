@@ -27,6 +27,7 @@ public static Point point=new Point(0, 0);
 public static final double fifthWheelToMainRatio=0.32831;
 public static int ControlMode = 0;
 public static int Direction = 1;
+static double toteSpeed=0.8;
 
 public static boolean AccelerationLimit = false;
 public static boolean HighGear = false;
