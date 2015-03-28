@@ -15,6 +15,6 @@ public class Autonomous {
 	static double time=0;
  public static void AutoP(){
 	 time=t1.get();
-	 if(time<2)Global.ArcadeDrive(0, 0.5, 0);
+	 if(time<1.5)Global.ArcadeDrive(0, 1, 0);
  }
 }

@@ -17,11 +17,11 @@ public static DoubleSolenoid LiftArm = new DoubleSolenoid(4,5);
 
 public static Preferences Settings = Preferences.getInstance();
 public static Compressor Comp = new Compressor();
-public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
+//public static Encoder LiftEncoder = new Encoder(0,1,false,EncodingType.k4X);
 public static Point point=new Point(0, 0);
 //public static Vission vission=new Vission();
 
-public static Switch BinSwitchBottom = new Switch(2);
+//public static Switch BinSwitchBottom = new Switch(2);
 
 
 public static final double fifthWheelToMainRatio=0.32831;
@@ -52,7 +52,7 @@ static class Point{
 public static void ArcadeDrive(double X, double Y, double Center){
 	
 	if (Math.abs(Center) > 0 || Math.abs(X) > 0) {
-		Global.FifthWheel.set(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio))));
+		Global.FifthWheel.set(-(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio)))));
 	} else {
 		Global.FifthWheel.stopMotor();
 	}
@@ -119,7 +119,7 @@ public static class Intake{
 		private static Talon ToteLift1 = new Talon(6);
 		private static Talon ToteLift2 = new Talon(7);
 		private static double speed1=0,speed2=0;
-		public static boolean ToteLiftUp = false;
+		public static boolean ToteLiftUp = false, manual=false;
 		public static int isMoving=0;
 		public static void stop(){
 			ToteLift1.stopMotor();
@@ -127,26 +127,30 @@ public static class Intake{
 			isMoving=0;
 			speed1=speed2=0;
 		}
-		public static void set(double speed){
+		public static void set(double speed,boolean Manual){
 			ToteLift1.set(-speed);
 			ToteLift2.set(speed);
 			speed2=speed1=speed;
 			ToteLiftUp=speed>0;
 			isMoving=3;
+			manual=Manual;
+			
 		}
 		public static void Refresh(){
-			ToteSwitchBottomLeft.refresh();
-			ToteSwitchTopLeft.refresh();
-			ToteSwitchBottomRight.refresh();
-			ToteSwitchTopRight.refresh();
-			isMoving=(speed2!=0?2:0)+(speed1!=0?1:0);
-			if ((ToteLiftUp && ToteSwitchTopLeft.Current) || (!ToteLiftUp && ToteSwitchBottomLeft.Current)) {
-				ToteLift1.stopMotor();
-				speed1=0;
-			}
-			if ((ToteLiftUp && ToteSwitchTopRight.Current) || (!ToteLiftUp && ToteSwitchBottomRight.Current)) {
-				ToteLift2.stopMotor();
-				speed2=0;
+			if(!manual){
+				ToteSwitchBottomLeft.refresh();
+				ToteSwitchTopLeft.refresh();
+				ToteSwitchBottomRight.refresh();
+				ToteSwitchTopRight.refresh();
+				isMoving=(speed2!=0?2:0)+(speed1!=0?1:0);
+				if ((ToteLiftUp && ToteSwitchTopLeft.Current) || (!ToteLiftUp && ToteSwitchBottomLeft.Current)) {
+					ToteLift1.stopMotor();
+					speed1=0;
+				}
+				if ((ToteLiftUp && ToteSwitchTopRight.Current) || (!ToteLiftUp && ToteSwitchBottomRight.Current)) {
+					ToteLift2.stopMotor();
+					speed2=0;
+				}
 			}
 		}
 	}

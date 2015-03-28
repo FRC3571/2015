@@ -30,6 +30,7 @@ public class Teleop {
 	static double LiftY = 0;
 	static double ToteStack = 0;
 	static double LiftHeight = 0;
+	final static boolean Manual = true;
 
 	/**
  	* Teleop initialization code
@@ -49,7 +50,7 @@ public class Teleop {
 					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
 				}
 				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
-				SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
+				//SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
 				n = 1;
@@ -135,8 +136,8 @@ public class Teleop {
 					}
 				}
 				
-				if(OperatorButtons.RB.changedDown) Global.ToteLift.set(1);
-				if(OperatorButtons.LB.changedDown) Global.ToteLift.set(-1);
+				if(OperatorButtons.RB.changedDown) Global.ToteLift.set(0.5,Manual);
+				if(OperatorButtons.LB.changedDown) Global.ToteLift.set(-0.5,Manual);
 				if(OperatorButtons.LeftStick.changedDown) Global.ToteLift.stop();
 				
 				LiftY = -Global.operator.Triggers.Combined;
@@ -146,7 +147,7 @@ public class Teleop {
 					Global.BinLift.stopMotor();
 				}
 				if(Math.abs(Strafe)<0.2)Strafe=0;
-				Global.ArcadeDrive(X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
+				Global.ArcadeDrive((DriverButtons.A.current?1:0.8)*X,(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 6;
 			} catch(Exception e) {
 				throw new Exception("Teleop "+n+" "+e.getMessage());

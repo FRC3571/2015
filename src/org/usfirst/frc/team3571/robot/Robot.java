@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  */
 public class Robot extends IterativeRobot {
 	double driveX=0,driveY=0;
-	Camera CameraThread;
+	//Camera CameraThread;
 	Timer TopLeftTimer = new Timer();
 	Timer TopRightTimer = new Timer();
 	int Reset = 0;
@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot {
 	    	if (!Global.Settings.containsKey("ToteHeight")) {
 	    		Global.Settings.putInt("ToteHeight", 100);
 	    	}
-	    	CameraThread = new Camera();
+	    	//CameraThread = new Camera();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
@@ -75,17 +75,17 @@ public class Robot extends IterativeRobot {
     	try {
 			Global.driver.refresh();
 			Global.operator.refresh();
-			Global.BinSwitchBottom.refresh();
-			Global.ToteLift.Refresh();
+			//Global.BinSwitchBottom.refresh();
+			//Global.ToteLift.Refresh();
 			Teleop.TeleopP();
-			ArduinoCom.main();
+			//ArduinoCom.main();
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
 		}
     }
     
     public void testInit(){
-    	Global.ToteLift.set(-1);
+    	Global.ToteLift.set(-1,false);
     }
     public void testPeriodic() {
     	try {
@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot {
     		if(Global.ToteLift.isMoving==0 && Global.ToteLift.ToteSwitchBottomLeft.Current){
     			TopLeftTimer.start();
     			TopRightTimer.start();
-    			Global.ToteLift.set(1);
+    			Global.ToteLift.set(1,false);
     		} 
     		if(Global.ToteLift.isMoving%2!=1){
     			TopLeftTimer.stop();
