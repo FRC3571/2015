@@ -3,6 +3,7 @@ package org.usfirst.frc.team3571.robot;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	Command AutoCommand;
+	SendableChooser AutoChooser;
 	double driveX=0,driveY=0;
 	//Camera CameraThread;
 	Timer TopLeftTimer = new Timer();
@@ -26,6 +29,10 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	try {
+    		AutoChooser = new SendableChooser();
+    		AutoChooser.addDefault("MoveAuto", new AutoMove());
+    		AutoChooser.addObject("Expermental Tote Pickup", new AutoTote());
+    		SmartDashboard.putData("AutoChoices", AutoChooser);
 	    	Global.Shifter.set(Value.kReverse);
 	    	if (!Global.Settings.containsKey("ControlMode")) {
 	    		Global.Settings.putInt("ControlMode", 0);
@@ -41,21 +48,11 @@ public class Robot extends IterativeRobot {
     		SmartDashboard.putString("error", e.getMessage());
     	}
     }
-
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousInit(){
-    	try {
-    		Autonomous.AutoInit();
-    	} catch (Exception e) {
-    		SmartDashboard.putString("error", e.getMessage());
-    	}
-    }
     		
-    public void autonomousPeriodic() {
+    public void autonomousInit() {
     	try {
-    		Autonomous.AutoP();
+    		AutoCommand = (Command)AutoChooser.getSelected();
+    		AutoCommand.start();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
