@@ -18,7 +18,7 @@ public class TextWriter {
 	public TextWriter(String location, boolean overwrite) throws IOException{
 		textFile = new File(location);
 		if(textFile.exists() && !overwrite){
-			for(int i=0;i<20;i++){
+			for(int i=0;i<20;i++){ 
 				if(!(new File(location + i)).exists()){
 					textFile=new File(location+i);
 					break;

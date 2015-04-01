@@ -1,7 +1,5 @@
 package org.usfirst.frc.team3571.robot;
 
-import org.usfirst.frc.team3571.robot.Global.Intake;
-import org.usfirst.frc.team3571.robot.Global.Intake.IntakeDirection;
 import org.usfirst.frc.team3571.robot.XboxController.*;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -9,11 +7,12 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
 	
-	static PowerDistributionPanel pdp=new PowerDistributionPanel();
 	static int Countdown = 0;
 	static int Acceleration = 0;
 	static int LimitedSpeed = 0;
@@ -30,26 +29,37 @@ public class Teleop {
 	static double LiftY = 0;
 	static double ToteStack = 0;
 	static double LiftHeight = 0;
+	static int run=0;
 	final static boolean Manual = false;
+	public static LogExcel l;
+	static Command log;
 
 	/**
  	* Teleop initialization code
+	 * @throws Exception 
  	*/
-	 public static void TeleopInit(){
-	    	Global.Comp.start();
+	 public static void TeleopInit() throws Exception{
+	    try{
+	    	log=new ExcelLog();
+	    	log.start();
+		 Global.Comp.start();
 	    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
 			Global.MiddleWheel.set(Value.kReverse);
+			l=new LogExcel();
+			run=0;
+	    }
+	    catch(Exception e){
+	    	throw new Exception("TelInit"+ " "+e.getMessage());
+	    }
 	 }
 	 /**
 	  * Teleop periodic code
 	  */
 	 public static void TeleopP() throws Exception{
 		 int n=0;
+		 run++;
 			try{
-				for(int i=0;i<4;i++){
-					SmartDashboard.putNumber("Amps"+i, pdp.getCurrent(i));
-				}
-				SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
+		    	Scheduler.getInstance().run();
 				//SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
@@ -123,7 +133,7 @@ public class Teleop {
 					YSpeed=0;
 				}
 				
-				Intake.set(OperatorDpad);
+				//Intake.set(OperatorDpad);
 				
 				n=5;
 				
@@ -144,8 +154,10 @@ public class Teleop {
 				LiftY = -Global.operator.Triggers.Combined;
 				if(Math.abs(LiftY) > 0){
 					Global.BinLift.set(LiftY);
+					Global.Motors.bl=LiftY;
 				} else {
 					Global.BinLift.stopMotor();
+					Global.Motors.bl=0;
 				}
 				if(Math.abs(Strafe)<0.2)Strafe=0;
 				Global.ArcadeDrive((DriverButtons.RightStick.current?1:0.8)*X,(DriverButtons.A.current?-1:1)*(Global.AccelerationLimit? YSpeed:Y),Strafe);

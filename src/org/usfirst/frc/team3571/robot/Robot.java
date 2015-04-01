@@ -4,6 +4,7 @@ package org.usfirst.frc.team3571.robot;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 
@@ -57,10 +58,9 @@ public class Robot extends IterativeRobot {
     		SmartDashboard.putString("error", e.getMessage());
     	}
     }
-
-    /**
-     * This function is called periodically during operator control
-     */
+    public void autonomousPeriodic(){
+    	Scheduler.getInstance().run();
+    }
     
     public void teleopInit() {
     	try {
