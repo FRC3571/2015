@@ -9,9 +9,10 @@ import edu.wpi.first.wpilibj.I2C.Port;
 
 public class ArduinoCom {
 	static I2C Wire = new I2C(Port.kOnboard, 4);
-	private static LED pastLEDs[]=new LED[300];
+	private static List<LED> pastLEDs = new ArrayList<LED>();
 	public class  LED {
-		public byte R=0,G=0,B=0, movement=0;
+		public List<Byte> R=new ArrayList<Byte>(), G= new ArrayList<Byte>(), B= new ArrayList<Byte>();
+		public byte movement=0, LEDchanges;
 		public int timein=500,timeout=500, location=0, min=0, max=29;
 		public double mspeed=10;
 		public boolean bounce=false,changingLight=false,fadeIn=false,fadeOut=false;
@@ -19,17 +20,23 @@ public class ArduinoCom {
 			location=Location;
 			min=location;
 			max =location;
-			R=Red;
-			G=Green;
-			B=Blue;
+			R.add(Red);
+			G.add(Green);
+			B.add(Blue);
+			LEDchanges=1;
 		}
 		public boolean compare(LED leds){
-			boolean tot= this.R==leds.R && this.G==leds.G && this.B==leds.B
-					&& this.movement==leds.movement && this.min==leds.min && this.max==leds.max
+			if(leds.R.get(0)==0 && leds.G.get(0)==0 && leds.B.get(0)==0 && LEDchanges==1){
+				if(R.get(0)==0 && G.get(0)==0 && B.get(0)==0 && R.size()==1)return true;
+				else return false;
+			}
+			for(int i=0;i<LEDchanges;i++){
+				if(leds.R.get(i)!=R.get(i) || leds.G.get(i)!=G.get(i) || leds.B.get(i)!=B.get(i))return false;
+			}
+			return this.movement==leds.movement && this.min==leds.min && this.max==leds.max
 					&& this.timein==leds.timein && this.timeout==leds.timeout && this.mspeed==leds.mspeed
 					&& this.bounce==leds.bounce && this.changingLight==leds.changingLight && this.fadeIn==leds.fadeIn
 					&& this.fadeOut==leds.fadeOut;
-			return tot;
 		}
 	}
 	public static void send(LED led[]) throws Exception {
@@ -37,7 +44,7 @@ public class ArduinoCom {
 		try {
 			List<Integer> tosend=new ArrayList<Integer>();
 			for(int i=0;i<led.length;i++){
-				if(!pastLEDs[led[i].location].compare(led[i])) tosend.add(i);
+				if(!pastLEDs.get(led[i].location).compare(led[i])) tosend.add(i);
 			}
 			n = 1;
 			for(int i=0;i<tosend.size();i++){
@@ -47,9 +54,9 @@ public class ArduinoCom {
 				byte[] bytesToSend=new byte[10]; //Initialize later
 				bytesToSend[0]=(byte)(now.location>255?'l':'L');
 				bytesToSend[1]=(byte)(now.location%256);
-				bytesToSend[2]=now.R;
-				bytesToSend[3]=now.G;
-				bytesToSend[4]=now.B;
+				bytesToSend[2]=now.R.get(i);
+				bytesToSend[3]=now.G.get(i);
+				bytesToSend[4]=now.B.get(i);
 				bytesToSend[5]=(byte)((now.movement << 4) + ((now.bounce ? 1 : 0) << 3) + ((now.changingLight ? 1 : 0) << 2) + ((now.fadeOut ? 1 : 0) << 1) + (now.fadeIn ? 1 : 0));
 				bytesToSend[6]=(byte)((timeIn.length << 6)+(timeOut.length<<4)+(now.max>255?8:0)+(now.min>255?4:0)+(mspeed.length));
 				for(int ii=0;ii<timeIn.length;ii++)bytesToSend[7+ii]=timeIn[ii];
