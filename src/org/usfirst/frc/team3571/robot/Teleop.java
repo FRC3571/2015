@@ -2,17 +2,14 @@ package org.usfirst.frc.team3571.robot;
 
 import org.usfirst.frc.team3571.robot.XboxController.*;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 
-import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
-	
 	static int Countdown = 0;
 	static int Acceleration = 0;
 	static int LimitedSpeed = 0;
@@ -30,6 +27,7 @@ public class Teleop {
 	static double ToteStack = 0;
 	static double LiftHeight = 0;
 	static int run=0;
+	static double driveMax=0.8;
 	final static boolean Manual = false;
 	public static LogExcel l;
 	static Command log;
@@ -59,6 +57,7 @@ public class Teleop {
 		 int n=0;
 		 run++;
 			try{
+				
 		    	Scheduler.getInstance().run();
 				//SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
@@ -160,7 +159,7 @@ public class Teleop {
 					Global.Motors.bl=0;
 				}
 				if(Math.abs(Strafe)<0.2)Strafe=0;
-				Global.ArcadeDrive((DriverButtons.RightStick.current?1:0.8)*X,(DriverButtons.A.current?-1:1)*(Global.AccelerationLimit? YSpeed:Y),Strafe);
+				Global.ArcadeDrive((DriverButtons.RightStick.current?1:SmartDashboard.getNumber("driveMax",0.8))*X,(DriverButtons.A.current?-1:1)*(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 6;
 			} catch(Exception e) {
 				throw new Exception("Teleop "+n+" "+e.getMessage());

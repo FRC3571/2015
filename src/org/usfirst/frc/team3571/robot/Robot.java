@@ -34,6 +34,11 @@ public class Robot extends IterativeRobot {
     		AutoChooser.addDefault("MoveAuto", new AutoMove());
     		AutoChooser.addObject("Expermental Tote Pickup", new AutoTote());
     		SmartDashboard.putData("AutoChoices", AutoChooser);
+	    	if (!Global.Settings.containsKey("driveMax")) {
+	    		Global.Settings.putDouble("driveMax", 0.8);
+	    		SmartDashboard.putNumber("driveMax", 0.8);
+	    	}
+	    	else SmartDashboard.putNumber("driveMax", Global.Settings.getDouble("driveMax", 0.8));
 	    	Global.Shifter.set(Value.kReverse);
 	    	if (!Global.Settings.containsKey("ControlMode")) {
 	    		Global.Settings.putInt("ControlMode", 0);
@@ -111,6 +116,7 @@ public class Robot extends IterativeRobot {
     }
     public void disableInit(){
     	try {
+    		Global.Settings.putDouble("driveMax",SmartDashboard.getNumber("driveMax", 0.8) );
 			Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
 	    	Global.Settings.putInt("ControlMode", Global.ControlMode);
 	    	Global.Settings.save();

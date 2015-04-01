@@ -1,11 +1,7 @@
 package org.usfirst.frc.team3571.robot;
 
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.Relay.Value;
 
 public class Global {
 public static XboxController driver = new XboxController(0);

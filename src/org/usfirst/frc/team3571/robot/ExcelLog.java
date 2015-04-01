@@ -3,7 +3,6 @@ package org.usfirst.frc.team3571.robot;
 import java.io.IOException;
 
 import jxl.read.biff.BiffException;
-import jxl.write.WriteException;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 
