@@ -13,7 +13,7 @@ public class LogExcel {
 	public int Lrow=0;
 	private int my=0;
 	public LogExcel() throws BiffException, IOException{
-		File fil=new File("/C/log");
+		File fil=new File("/C/log.xls");
 		if(fil.exists()){
 			wwb=Workbook.createWorkbook(fil, Workbook.getWorkbook(fil));
 			ws = wwb.getSheet(0);

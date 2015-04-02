@@ -30,6 +30,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	try {
+    		SmartDashboard.putBoolean("AutoOFF", false);
     		AutoChooser = new SendableChooser();
     		AutoChooser.addDefault("MoveAuto", new AutoMove());
     		AutoChooser.addObject("Expermental Tote Pickup", new AutoTote());
@@ -57,8 +58,10 @@ public class Robot extends IterativeRobot {
     		
     public void autonomousInit() {
     	try {
-    		AutoCommand = (Command)AutoChooser.getSelected();
-    		AutoCommand.start();
+    		if(!SmartDashboard.getBoolean("AutoOFF",false)){
+	    		AutoCommand = (Command)AutoChooser.getSelected();
+	    		AutoCommand.start();
+    		}
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}

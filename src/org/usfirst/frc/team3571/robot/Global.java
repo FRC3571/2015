@@ -136,8 +136,8 @@ public static void ArcadeDrive(double X, double Y, double Center){
 			speed1=speed2=0;
 		}
 		public static void set(double speed,boolean Manual){
-			ToteLift1.set(-speed);
-			ToteLift2.set(speed);
+			ToteLift1.set(speed);
+			ToteLift2.set(-speed);
 			speed2=speed1=speed;
 			ToteLiftUp=speed>0;
 			isMoving=3;

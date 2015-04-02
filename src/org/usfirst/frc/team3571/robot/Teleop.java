@@ -159,7 +159,7 @@ public class Teleop {
 					Global.Motors.bl=0;
 				}
 				if(Math.abs(Strafe)<0.2)Strafe=0;
-				Global.ArcadeDrive((DriverButtons.RightStick.current?1:SmartDashboard.getNumber("driveMax",0.8))*X,(DriverButtons.A.current?-1:1)*(Global.AccelerationLimit? YSpeed:Y),Strafe);
+				Global.ArcadeDrive(X,(DriverButtons.A.current?-1:1)*(DriverButtons.RightStick.current?1:SmartDashboard.getNumber("driveMax",0.8))*(Global.AccelerationLimit? YSpeed:Y),Strafe);
 				n = 6;
 			} catch(Exception e) {
 				throw new Exception("Teleop "+n+" "+e.getMessage());
