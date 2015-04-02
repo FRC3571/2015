@@ -23,7 +23,7 @@ public class Teleop {
 	static buttons DriverButtons = Global.driver.Buttons;
 	static buttons OperatorButtons = Global.operator.Buttons;
 	static POV OperatorDpad = Global.operator.DPad;
-	static double YSpeed;
+	static double XSpeed;
 	static double Y;
 	static double X;
 	static double Strafe;
@@ -104,23 +104,25 @@ public class Teleop {
 						X = (Math.abs(X*2.27)<1?X*2.27:Math.abs(X)/X);
 					}
 				}
-				
-				if (Y > YSpeed) {
-					YSpeed+=0.01; // change this later
-					if (YSpeed > Y) {
-						YSpeed = Y;
+				if (Strafe > XSpeed) {
+					XSpeed+=0.02; // change this later
+					if (XSpeed > Strafe) {
+						XSpeed = Strafe;
 					}
-				} else if (YSpeed > Y) {
-					YSpeed-=0.01;
-					if (Y > YSpeed){
-						YSpeed = Y;
+				} else if (XSpeed > Strafe) {
+					XSpeed-=0.02;
+					if (Strafe > XSpeed){
+						XSpeed = Strafe;
 					}
 				}
+				if(Strafe==0)XSpeed=0;
+				else if(XSpeed/Strafe>1)XSpeed=Strafe;
+				else if(XSpeed*Strafe<0)XSpeed=0;
 				n = 4;
 				if(DriverButtons.B.current){
 					X=0;
 					Y=0;
-					YSpeed=0;
+					XSpeed=0;
 				}
 				
 				Intake.set(OperatorDpad);
@@ -148,7 +150,7 @@ public class Teleop {
 					Global.BinLift.stopMotor();
 				}
 				if(Math.abs(Strafe)<0.2)Strafe=0;
-				Global.ArcadeDrive((DriverButtons.RightStick.current?1:0.8)*X,(DriverButtons.A.current?-1:1)*(Global.AccelerationLimit? YSpeed:Y),Strafe);
+				Global.ArcadeDrive((DriverButtons.RightStick.current?1:0.8)*X,(DriverButtons.A.current?-1:1)*Y,XSpeed);
 				n = 6;
 			} catch(Exception e) {
 				throw new Exception("Teleop "+n+" "+e.getMessage());

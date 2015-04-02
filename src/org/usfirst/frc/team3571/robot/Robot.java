@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot {
 			Global.driver.refresh();
 			Global.operator.refresh();
 			//Global.BinSwitchBottom.refresh();
-			//Global.ToteLift.Refresh();
+			Global.ToteLift.Refresh();
 			Teleop.TeleopP();
 			//ArduinoCom.main();
 		} catch (Exception e) {
