@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3571.robot;
+/*package org.usfirst.frc.team3571.robot;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
+/*
 public class ExcelLog extends Command {
 	LogExcel log;
 	PowerDistributionPanel pdp=new PowerDistributionPanel();
@@ -81,3 +82,4 @@ String label[]={"Volts","TotalAmps"};
 		}
     }
 }
+*/

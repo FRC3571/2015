@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3571.robot;
+/*package org.usfirst.frc.team3571.robot;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,13 +13,14 @@ public class LogExcel {
 	public int Lrow=0;
 	private int my=0;
 	public LogExcel() throws BiffException, IOException{
-		File fil=new File("/C/log.xls");
+		File fil=new File("/c/log.xls");
 		if(fil.exists()){
 			wwb=Workbook.createWorkbook(fil, Workbook.getWorkbook(fil));
 			ws = wwb.getSheet(0);
 			Lrow=(int)((Number)ws.getCell(0, 0)).getValue()+1;
 		}
 		else{
+			fil.createNewFile();
 			wwb=Workbook.createWorkbook(fil);
 			ws=wwb.createSheet("Log", 0);
 		}
@@ -40,4 +41,4 @@ public class LogExcel {
 		wwb.close();
 	}
 
-}
+}*/
