@@ -122,6 +122,7 @@ public class Robot extends IterativeRobot {
     }
     public void disableInit(){
     	try {
+    		if(log.isRunning())log.cancel();
     		Global.Settings.putDouble("driveMax",SmartDashboard.getNumber("driveMax", 0.8) );
 			Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
 	    	Global.Settings.putInt("ControlMode", Global.ControlMode);
