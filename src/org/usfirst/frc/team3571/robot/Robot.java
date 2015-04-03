@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	Command AutoCommand, log;
+	Command AutoCommand;
 	SendableChooser AutoChooser;
 	double driveX=0,driveY=0;
 	//Camera CameraThread;
@@ -123,7 +123,7 @@ public class Robot extends IterativeRobot {
     }
     public void disableInit(){
     	try {
-    		if(!log.isCanceled())log.cancel();
+    		//if(!log.isCanceled())log.cancel();
     		Global.Settings.putDouble("driveMax",SmartDashboard.getNumber("driveMax", 0.8) );
 			Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
 	    	Global.Settings.putInt("ControlMode", Global.ControlMode);
