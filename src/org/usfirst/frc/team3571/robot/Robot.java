@@ -31,6 +31,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	try {
     		SmartDashboard.putBoolean("AutoOFF", false);
+    		SmartDashboard.putBoolean("ToteManual", false);
     		AutoChooser = new SendableChooser();
     		AutoChooser.addDefault("MoveAuto", new AutoMove());
     		AutoChooser.addObject("Expermental Tote Pickup", new AutoTote());
@@ -86,7 +87,7 @@ public class Robot extends IterativeRobot {
 			Global.driver.refresh();
 			Global.operator.refresh();
 			//Global.BinSwitchBottom.refresh();
-			//Global.ToteLift.Refresh();
+			Global.ToteLift.Refresh();
 			Teleop.TeleopP();
 			//ArduinoCom.main();
 	    	//Scheduler.getInstance().run();

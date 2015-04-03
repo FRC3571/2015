@@ -2,6 +2,7 @@ package org.usfirst.frc.team3571.robot;
 
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Global {
 public static XboxController driver = new XboxController(0);
@@ -150,6 +151,10 @@ public static void ArcadeDrive(double X, double Y, double Center){
 				ToteSwitchTopLeft.refresh();
 				ToteSwitchBottomRight.refresh();
 				ToteSwitchTopRight.refresh();
+				SmartDashboard.putBoolean("TopLeft", ToteSwitchTopLeft.Current);
+				SmartDashboard.putBoolean("TopRight", ToteSwitchTopRight.Current);
+				SmartDashboard.putBoolean("BottomLeft", ToteSwitchBottomLeft.Current);
+				SmartDashboard.putBoolean("BottomRight", ToteSwitchBottomRight.Current);
 				isMoving=(speed2!=0?2:0)+(speed1!=0?1:0);
 				if ((ToteLiftUp && ToteSwitchTopLeft.Current) || (!ToteLiftUp && ToteSwitchBottomLeft.Current)) {
 					ToteLift1.stopMotor();

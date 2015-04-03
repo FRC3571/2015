@@ -2,11 +2,8 @@ package org.usfirst.frc.team3571.robot;
 
 import org.usfirst.frc.team3571.robot.XboxController.*;
 
-
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
@@ -28,7 +25,7 @@ public class Teleop {
 	static double LiftHeight = 0;
 	static int run=0;
 	static double driveMax=0.8;
-	final static boolean Manual = false;
+	static boolean Manual = false;
 	//public static LogExcel l;
 	//static Command log;
 
@@ -56,7 +53,7 @@ public class Teleop {
 		 int n=0;
 		 run++;
 			try{
-				
+				Manual=SmartDashboard.getBoolean("ToteManual", false);
 				//SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
@@ -133,7 +130,7 @@ public class Teleop {
 					Y=0;
 					XSpeed=0;
 				}
-				
+				if(DriverButtons.RightStick.current)XSpeed=Strafe;
 				//Intake.set(OperatorDpad);
 				
 				n=5;
@@ -151,7 +148,8 @@ public class Teleop {
 				if(OperatorButtons.RB.changedDown) Global.ToteLift.set(Global.toteSpeed,Manual);
 				if(OperatorButtons.LB.changedDown) Global.ToteLift.set(-Global.toteSpeed,Manual);
 				if(OperatorButtons.LeftStick.changedDown) Global.ToteLift.stop();
-				
+				Global.operator.vibrate(RumbleType.kRightRumble, Global.ToteLift.isMoving>0?1:0);
+				Global.operator.vibrate(RumbleType.kLeftRumble, Global.ToteLift.isMoving>0?1:0);				
 				LiftY = -Global.operator.Triggers.Combined;
 				if(Math.abs(LiftY) > 0){
 					Global.BinLift.set(LiftY);
@@ -161,7 +159,7 @@ public class Teleop {
 					Global.Motors.bl=0;
 				}
 				if(Math.abs(Strafe)<0.2)Strafe=0;
-				Global.ArcadeDrive(X,(DriverButtons.A.current?-1:1)*(DriverButtons.RightStick.current?1:SmartDashboard.getNumber("driveMax",0.8))*Y,XSpeed);
+				Global.ArcadeDrive(X,(DriverButtons.A.current?-1:1)*(DriverButtons.Y.current?1:SmartDashboard.getNumber("driveMax",0.8))*Y,XSpeed);
 				n = 6;
 			} catch(Exception e) {
 				throw new Exception("Teleop "+n+" "+e.getMessage());
