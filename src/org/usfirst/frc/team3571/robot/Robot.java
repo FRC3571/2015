@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	Command AutoCommand;
+	Command AutoCommand,log;
 	SendableChooser AutoChooser;
 	double driveX=0,driveY=0;
 	//Camera CameraThread;
@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	try {
+    	try{
     		SmartDashboard.putBoolean("AutoOFF", false);
     		AutoChooser = new SendableChooser();
     		AutoChooser.addDefault("MoveAuto", new AutoMove());
@@ -74,6 +74,8 @@ public class Robot extends IterativeRobot {
     	try {
     		Teleop.TeleopInit();
     		//CameraThread.teleOp();
+	    	log=new ExcelLog();
+	    	log.start();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
@@ -87,6 +89,7 @@ public class Robot extends IterativeRobot {
 			//Global.ToteLift.Refresh();
 			Teleop.TeleopP();
 			//ArduinoCom.main();
+	    	Scheduler.getInstance().run();
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
 		}

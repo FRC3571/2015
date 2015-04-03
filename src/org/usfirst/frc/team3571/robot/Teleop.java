@@ -29,8 +29,6 @@ public class Teleop {
 	static int run=0;
 	static double driveMax=0.8;
 	final static boolean Manual = false;
-	public static LogExcel l;
-	static Command log;
 
 	/**
  	* Teleop initialization code
@@ -38,12 +36,9 @@ public class Teleop {
  	*/
 	 public static void TeleopInit() throws Exception{
 	    try{
-	    	log=new ExcelLog();
-	    	log.start();
 		 Global.Comp.start();
 	    	Global.ControlMode = Global.Settings.getInt("ControlMode", 0);
 			Global.MiddleWheel.set(Value.kReverse);
-			l=new LogExcel();
 			run=0;
 	    }
 	    catch(Exception e){
@@ -57,8 +52,6 @@ public class Teleop {
 		 int n=0;
 		 run++;
 			try{
-				
-		    	Scheduler.getInstance().run();
 				//SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);

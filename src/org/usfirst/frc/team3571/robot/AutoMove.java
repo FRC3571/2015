@@ -25,11 +25,12 @@ public class AutoMove extends Command {
     protected void execute() {
    	 time=t1.get();
    	 if(time<1.5)Global.ArcadeDrive(0, 1, 0);
+   	 else Global.ArcadeDrive(0, 0, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return this.timeSinceInitialized()>3;
     }
 
     // Called once after isFinished returns true
