@@ -88,6 +88,7 @@ public class Teleop {
 				X = LeftStick.X;
 				Strafe = RightStick.X;
 				
+				if(Math.abs(Strafe)<0.2)Strafe=0;
 				if (Math.abs(X) <= 0.2){
 					X = 0;
 				}	
