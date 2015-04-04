@@ -32,6 +32,7 @@ public static boolean LiftArmActive = false;
 public static RobotDrive Drive = new RobotDrive(0,1,2,3);
 public static Talon FifthWheel = new Talon(4);
 public static Talon BinLift = new Talon(5);
+public static commandFinish finit=new commandFinish();
 
 static class Point{
 	public double X,Y;
@@ -50,6 +51,9 @@ public static class motors{
  * @param Y Forward/Back motion value
  * @param Center Sideways motion value
  */
+public static class commandFinish{
+	public boolean fin=false;
+}
 public static void ArcadeDrive(double X, double Y, double Center){
 	
 	if (Math.abs(Center) > 0 || Math.abs(X) > 0){

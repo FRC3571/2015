@@ -5,6 +5,7 @@ import java.io.IOException;
 import jxl.read.biff.BiffException;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -32,10 +33,11 @@ String label[]={"Volts","TotalAmps"};
 	    		log.writeText(21, 0, "SideDrive");
 	    		log.writeText(22, 0, "toteLift");
 	    		log.writeText(23, 0, "binLift");
+				SmartDashboard.putNumber("save", 0);
 	    	}
     	}
     	catch(Exception e){
-    		
+    		SmartDashboard.putString("error", e.getMessage());	
     	}
     }
 
@@ -61,14 +63,16 @@ String label[]={"Volts","TotalAmps"};
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return this.timeSinceInitialized()>10;
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	try {
 			log.close();
+			SmartDashboard.putNumber("save", 1);
 		} catch (Exception e) {
+			SmartDashboard.putString("error", e.getMessage());
 		}
     }
 
@@ -77,7 +81,9 @@ String label[]={"Volts","TotalAmps"};
     protected void interrupted() {
     	try {
 			log.close();
+			SmartDashboard.putNumber("save", 2);
 		} catch (Exception e) {
+			SmartDashboard.putString("error", e.getMessage());
 		}
     }
 }

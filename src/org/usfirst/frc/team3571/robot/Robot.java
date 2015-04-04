@@ -75,7 +75,9 @@ public class Robot extends IterativeRobot {
     		Teleop.TeleopInit();
     		//CameraThread.teleOp();
 	    	log=new ExcelLog();
+	    	log.setRunWhenDisabled(true);
 	    	log.start();
+	    	Global.finit.fin=false;
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
@@ -89,6 +91,7 @@ public class Robot extends IterativeRobot {
 			//Global.ToteLift.Refresh();
 			Teleop.TeleopP();
 			//ArduinoCom.main();
+	    	if(!log.isRunning())log.start();
 	    	Scheduler.getInstance().run();
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
@@ -122,6 +125,7 @@ public class Robot extends IterativeRobot {
     }
     public void disableInit(){
     	try {
+    		Global.finit.fin=true;
     		if(log.isRunning())log.cancel();
     		Global.Settings.putDouble("driveMax",SmartDashboard.getNumber("driveMax", 0.8) );
 			Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
@@ -130,6 +134,7 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("error","");
 			Global.Comp.stop();
 			//Global.vission.isRunning=false;
+	    	Scheduler.getInstance().run();
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
