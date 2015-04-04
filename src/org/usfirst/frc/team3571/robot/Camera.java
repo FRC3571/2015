@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3571.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * 

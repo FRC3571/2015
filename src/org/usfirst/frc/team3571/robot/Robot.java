@@ -3,6 +3,8 @@ package org.usfirst.frc.team3571.robot;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 
@@ -14,11 +16,14 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	Command AutoCommand;
+	SendableChooser AutoChooser;
 	double driveX=0,driveY=0;
 	//Camera CameraThread;
 	Timer TopLeftTimer = new Timer();
 	Timer TopRightTimer = new Timer();
 	int Reset = 0;
+	PowerDistributionPanel pdp=new PowerDistributionPanel();
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -26,6 +31,20 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	try {
+    		SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
+    		SmartDashboard.putBoolean("AutoOFF", false);
+    		SmartDashboard.putBoolean("ToteManual", false);
+    	   	SmartDashboard.putNumber("AutoSpeed", 1);
+    	 	SmartDashboard.putNumber("AutoTime", 1.5);
+    		AutoChooser = new SendableChooser();
+    		AutoChooser.addDefault("MoveAuto", new AutoMove());
+    		AutoChooser.addObject("Expermental Tote Pickup", new AutoTote());
+    		SmartDashboard.putData("AutoChoices", AutoChooser);
+	    	if (!Global.Settings.containsKey("driveMax")) {
+	    		Global.Settings.putDouble("driveMax", 0.8);
+	    		SmartDashboard.putNumber("driveMax", 0.8);
+	    	}
+	    	else SmartDashboard.putNumber("driveMax", Global.Settings.getDouble("driveMax", 0.8));
 	    	Global.Shifter.set(Value.kReverse);
 	    	if (!Global.Settings.containsKey("ControlMode")) {
 	    		Global.Settings.putInt("ControlMode", 0);
@@ -41,32 +60,25 @@ public class Robot extends IterativeRobot {
     		SmartDashboard.putString("error", e.getMessage());
     	}
     }
-
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousInit(){
-    	try {
-    		Autonomous.AutoInit();
-    	} catch (Exception e) {
-    		SmartDashboard.putString("error", e.getMessage());
-    	}
-    }
     		
-    public void autonomousPeriodic() {
+    public void autonomousInit() {
     	try {
-    		Autonomous.AutoP();
+    		if(!SmartDashboard.getBoolean("AutoOFF",false)){
+	    		AutoCommand = (Command)AutoChooser.getSelected();
+	    		AutoCommand.start();
+    		}
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
     	}
     }
-
-    /**
-     * This function is called periodically during operator control
-     */
+    public void autonomousPeriodic(){
+    	Scheduler.getInstance().run();
+    }
     
     public void teleopInit() {
     	try {
+    		//log=new ExcelLog();
+    		//log.start();
     		Teleop.TeleopInit();
     		//CameraThread.teleOp();
     	} catch (Exception e) {
@@ -82,6 +94,8 @@ public class Robot extends IterativeRobot {
 			Global.ToteLift.Refresh();
 			Teleop.TeleopP();
 			//ArduinoCom.main();
+	    	//Scheduler.getInstance().run();
+			
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
 		}
@@ -112,8 +126,10 @@ public class Robot extends IterativeRobot {
     		
     	}
     }
-    public void disableInit(){
+    public void disabledInit(){
     	try {
+    		//if(!log.isCanceled())log.cancel();
+    		Global.Settings.putDouble("driveMax",SmartDashboard.getNumber("driveMax", 0.8) );
 			Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
 	    	Global.Settings.putInt("ControlMode", Global.ControlMode);
 	    	Global.Settings.save();

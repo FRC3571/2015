@@ -1,11 +1,8 @@
 package org.usfirst.frc.team3571.robot;
 
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.Relay.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Global {
 public static XboxController driver = new XboxController(0);
@@ -43,6 +40,10 @@ static class Point{
 		Y=y;
 	}
 }
+public static motors Motors = new motors();
+public static class motors{
+	public double x=0,y=0,m=0,tl=0,bl=0;
+}
 /**
  * Controlling main 5 wheel drive
  * @param X Rotation Value
@@ -51,19 +52,25 @@ static class Point{
  */
 public static void ArcadeDrive(double X, double Y, double Center){
 	
-	if (Math.abs(Center) > 0 || Math.abs(X) > 0) {
+	if (Math.abs(Center) > 0 || Math.abs(X) > 0){
+		Motors.m=-(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio))));
 		Global.FifthWheel.set(-(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio)))));
 	} else {
+		Motors.m=0;
 		Global.FifthWheel.stopMotor();
 	}
 	if (Math.abs(X) > 0 || Math.abs(Y) > 0){
+		Motors.x=X;
+		Motors.y=Y;
 		Drive.arcadeDrive(Y,X);
 	}
 	else {
+		Motors.x=0;
+		Motors.y=0;
 		Drive.stopMotor();
 	}
 }
-public static class Intake{
+/*public static class Intake{
 	public static enum IntakeDirection{
 		Off(Value.kOff,Value.kOff),
 		Left(Value.kForward,Value.kForward),
@@ -110,7 +117,7 @@ public static class Intake{
 		IntakeMotorsL.set(Value.kOff);
 		IntakeMotorsR.set(Value.kOff);
 	}
-}
+}*/
 	public static class ToteLift{
 		public static Switch ToteSwitchBottomLeft = new Switch(3);
 		public static Switch ToteSwitchTopLeft = new Switch(4);
@@ -124,6 +131,7 @@ public static class Intake{
 		public static void stop(){
 			ToteLift1.stopMotor();
 			ToteLift2.stopMotor();
+			Motors.tl=0;
 			isMoving=0;
 			speed1=speed2=0;
 		}
@@ -134,7 +142,7 @@ public static class Intake{
 			ToteLiftUp=speed>0;
 			isMoving=3;
 			manual=Manual;
-			
+			Motors.tl=speed;
 		}
 		public static void Refresh(){
 			if(!manual){
@@ -142,6 +150,10 @@ public static class Intake{
 				ToteSwitchTopLeft.refresh();
 				ToteSwitchBottomRight.refresh();
 				ToteSwitchTopRight.refresh();
+				SmartDashboard.putBoolean("TopLeft", ToteSwitchTopLeft.Current);
+				SmartDashboard.putBoolean("TopRight", ToteSwitchTopRight.Current);
+				SmartDashboard.putBoolean("BottomLeft", ToteSwitchBottomLeft.Current);
+				SmartDashboard.putBoolean("BottomRight", ToteSwitchBottomRight.Current);
 				isMoving=(speed2!=0?2:0)+(speed1!=0?1:0);
 				if ((ToteLiftUp && ToteSwitchTopLeft.Current) || (!ToteLiftUp && ToteSwitchBottomLeft.Current)) {
 					ToteLift1.stopMotor();
