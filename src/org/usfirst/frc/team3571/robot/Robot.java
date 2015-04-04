@@ -126,7 +126,7 @@ public class Robot extends IterativeRobot {
     		
     	}
     }
-    public void disableInit(){
+    public void disabledInit(){
     	try {
     		//if(!log.isCanceled())log.cancel();
     		Global.Settings.putDouble("driveMax",SmartDashboard.getNumber("driveMax", 0.8) );
