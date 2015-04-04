@@ -56,6 +56,7 @@ public class Teleop {
 				Manual=SmartDashboard.getBoolean("ToteManual", false);
 				//SmartDashboard.putNumber("LiftEncoder", Global.LiftEncoder.getDistance());
 				SmartDashboard.putNumber("Totes", ToteStack);
+				SmartDashboard.putNumber("Totes", ToteStack);
 				SmartDashboard.putBoolean("LiftArm", Global.LiftArmActive);
 				Global.toteSpeed=Global.Settings.getDouble("ToteSpeed", 0.8);
 				n = 1;

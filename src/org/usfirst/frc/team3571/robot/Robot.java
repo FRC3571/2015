@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
 	Timer TopLeftTimer = new Timer();
 	Timer TopRightTimer = new Timer();
 	int Reset = 0;
+	PowerDistributionPanel pdp=new PowerDistributionPanel();
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -30,8 +31,11 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
     	try {
+    		SmartDashboard.putNumber("TotalAmps", pdp.getTotalCurrent());
     		SmartDashboard.putBoolean("AutoOFF", false);
     		SmartDashboard.putBoolean("ToteManual", false);
+    	   	SmartDashboard.putNumber("AutoSpeed", 1);
+    	 	SmartDashboard.putNumber("AutoTime", 1.5);
     		AutoChooser = new SendableChooser();
     		AutoChooser.addDefault("MoveAuto", new AutoMove());
     		AutoChooser.addObject("Expermental Tote Pickup", new AutoTote());
