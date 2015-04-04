@@ -12,6 +12,7 @@ public class LogExcel {
 	private WritableSheet ws;
 	public int Lrow=0;
 	private int my=0;
+	private boolean closed=false;
 	public LogExcel() throws BiffException, IOException{
 		File fil=new File("/C/log.xls");
 		if(fil.exists()){
@@ -23,7 +24,7 @@ public class LogExcel {
 			wwb=Workbook.createWorkbook(fil);
 			ws=wwb.createSheet("Log", 0);
 		}
-		
+		closed=false;
 	}
 	public void writeNumber(int X,int Y, double val) throws RowsExceededException, WriteException{
 		ws.addCell(new Number(X,Y,val));
@@ -34,10 +35,13 @@ public class LogExcel {
 		if(my<Y)my=Y;
 	}
 	public void close() throws WriteException, IOException{
-		if(ws.getCell(0,0).getType() ==CellType.EMPTY)ws.addCell(new Number(0,0,my));
-		else ((Number)(ws.getCell(0,0))).setValue(my);
-		wwb.write();
-		wwb.close();
+		if(!closed){
+			if(ws.getCell(0,0).getType() ==CellType.EMPTY)ws.addCell(new Number(0,0,my));
+			else ((Number)(ws.getCell(0,0))).setValue(my);
+			wwb.write();
+			wwb.close();
+			closed=true;
+		}
 	}
 
 }

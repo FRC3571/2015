@@ -16,13 +16,15 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	Command AutoCommand,log;
+	Command AutoCommand;
 	SendableChooser AutoChooser;
 	double driveX=0,driveY=0;
 	//Camera CameraThread;
 	Timer TopLeftTimer = new Timer();
 	Timer TopRightTimer = new Timer();
+	Timer telTimer = new Timer();
 	int Reset = 0;
+	public static double x=0,y=0,m=0,tl=0,bl=0,time=0;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -74,9 +76,9 @@ public class Robot extends IterativeRobot {
     	try {
     		Teleop.TeleopInit();
     		//CameraThread.teleOp();
-	    	log=new ExcelLog();
-	    	log.setRunWhenDisabled(true);
-	    	log.start();
+	    	ExcelLog.initialize();
+	    	telTimer.reset();
+	    	telTimer.start();
 	    	Global.finit.fin=false;
     	} catch (Exception e) {
     		SmartDashboard.putString("error", e.getMessage());
@@ -85,13 +87,19 @@ public class Robot extends IterativeRobot {
     
     public void teleopPeriodic() {
     	try {
+    		ExcelLog.execute();
+    		SmartDashboard.putNumber("xSpeed", Robot.x);
+    		SmartDashboard.putNumber("runL", ExcelLog.runs);
 			Global.driver.refresh();
 			Global.operator.refresh();
 			//Global.BinSwitchBottom.refresh();
 			//Global.ToteLift.Refresh();
 			Teleop.TeleopP();
 			//ArduinoCom.main();
-	    	if(!log.isRunning())log.start();
+	    	/*if(!log.isRunning()){
+		    	log=new ExcelLog();
+		    	log.start();
+	    	}*/
 	    	Scheduler.getInstance().run();
 		} catch (Exception e) {
 			SmartDashboard.putString("error", e.getMessage());
@@ -123,10 +131,10 @@ public class Robot extends IterativeRobot {
     		
     	}
     }
-    public void disableInit(){
+    public void disabledInit(){
     	try {
-    		Global.finit.fin=true;
-    		if(log.isRunning())log.cancel();
+    		telTimer.stop();
+    		ExcelLog.save();
     		Global.Settings.putDouble("driveMax",SmartDashboard.getNumber("driveMax", 0.8) );
 			Global.Settings.putDouble("ToteSpeed", Global.toteSpeed);
 	    	Global.Settings.putInt("ControlMode", Global.ControlMode);

@@ -2,11 +2,7 @@ package org.usfirst.frc.team3571.robot;
 
 import org.usfirst.frc.team3571.robot.XboxController.*;
 
-
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Teleop {
@@ -149,10 +145,10 @@ public class Teleop {
 				LiftY = -Global.operator.Triggers.Combined;
 				if(Math.abs(LiftY) > 0){
 					Global.BinLift.set(LiftY);
-					Global.Motors.bl=LiftY;
+					Robot.bl=LiftY;
 				} else {
 					Global.BinLift.stopMotor();
-					Global.Motors.bl=0;
+					Robot.bl=0;
 				}
 				if(Math.abs(Strafe)<0.2)Strafe=0;
 				Global.ArcadeDrive(X,(DriverButtons.A.current?-1:1)*(DriverButtons.RightStick.current?1:SmartDashboard.getNumber("driveMax",0.8))*Y,XSpeed);
