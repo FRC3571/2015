@@ -28,13 +28,13 @@ public class AutoMove extends Command {
     double time=0;
     protected void execute() {
    	 time=t1.get();
-   	 if(time<mTime)Global.ArcadeDrive(0, mspeed, 0);
+   	 if(time<mTime)Global.ArcadeDrive(0, mspeed, 0);//Move forward for a set amount o time
    	 else Global.ArcadeDrive(0, 0, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timeSinceInitialized()>mTime+0.1;
+        return timeSinceInitialized()>mTime+0.1;//Finish 0.1s after the set time to allow the bot to stop the motors
     }
 
     // Called once after isFinished returns true

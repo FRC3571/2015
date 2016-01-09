@@ -36,10 +36,15 @@ public class Robot extends IterativeRobot {
     		SmartDashboard.putBoolean("ToteManual", false);
     	   	SmartDashboard.putNumber("AutoSpeed", 1);
     	 	SmartDashboard.putNumber("AutoTime", 1.5);
+    	 	
+    	 	//Autonomous chooser code
     		AutoChooser = new SendableChooser();
     		AutoChooser.addDefault("MoveAuto", new AutoMove());
     		AutoChooser.addObject("Expermental Tote Pickup", new AutoTote());
     		SmartDashboard.putData("AutoChoices", AutoChooser);
+    		
+    		//The rest in this method is for checking if a variable is in the robots saved file and getting it from there
+    		//else it will put a default value into the file
 	    	if (!Global.Settings.containsKey("driveMax")) {
 	    		Global.Settings.putDouble("driveMax", 0.8);
 	    		SmartDashboard.putNumber("driveMax", 0.8);
@@ -105,6 +110,7 @@ public class Robot extends IterativeRobot {
     	Global.ToteLift.set(-1,false);
     }
     public void testPeriodic() {
+    	//Shows the time it takes for each of the tote lift arms to reach the top sensor
     	try {
     		Global.ToteLift.Refresh();
     		SmartDashboard.putNumber("RightTimer", TopRightTimer.get());

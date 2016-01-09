@@ -40,7 +40,7 @@ static class Point{
 		Y=y;
 	}
 }
-public static motors Motors = new motors();
+public static motors Motors = new motors();//Used in the Excel class for logging current motor speed
 public static class motors{
 	public double x=0,y=0,m=0,tl=0,bl=0;
 }
@@ -53,11 +53,11 @@ public static class motors{
 public static void ArcadeDrive(double X, double Y, double Center){
 	
 	if (Math.abs(Center) > 0 || Math.abs(X) > 0){
-		Motors.m=-(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio))));
-		Global.FifthWheel.set(-(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio)))));
+		Motors.m = -(Center+(Math.max(-1,Math.min(1,X*fifthWheelToMainRatio))));//Makes sure that the bot is rotating around its actual center
+		FifthWheel.set(Motors.m);
 	} else {
 		Motors.m=0;
-		Global.FifthWheel.stopMotor();
+		FifthWheel.stopMotor();
 	}
 	if (Math.abs(X) > 0 || Math.abs(Y) > 0){
 		Motors.x=X;
@@ -125,27 +125,28 @@ public static void ArcadeDrive(double X, double Y, double Center){
 		public static Switch ToteSwitchTopRight = new Switch(6);
 		private static Talon ToteLift1 = new Talon(6);
 		private static Talon ToteLift2 = new Talon(7);
-		private static double speed1=0,speed2=0;
-		public static boolean ToteLiftUp = false, manual=false;
-		public static int isMoving=0;
+		private static double speed1 = 0,speed2 = 0;
+		public static boolean ToteLiftUp = false, manual = false;
+		public static int isMoving = 0;
 		public static void stop(){
 			ToteLift1.stopMotor();
 			ToteLift2.stopMotor();
-			Motors.tl=0;
-			isMoving=0;
-			speed1=speed2=0;
+			Motors.tl = 0;
+			isMoving = 0;
+			speed1 = speed2 = 0;
 		}
 		public static void set(double speed,boolean Manual){
 			ToteLift1.set(-speed);
 			ToteLift2.set(speed);
-			speed2=speed1=speed;
-			ToteLiftUp=speed>0;
-			isMoving=3;
-			manual=Manual;
-			Motors.tl=speed;
+			speed2=speed1 = speed;
+			ToteLiftUp = speed > 0;
+			isMoving = 3;
+			manual = Manual;
+			Motors.tl = speed;
 		}
 		public static void Refresh(){
 			if(!manual){
+				//Gets current end stop values and puts them on the SmartDashboard
 				ToteSwitchBottomLeft.refresh();
 				ToteSwitchTopLeft.refresh();
 				ToteSwitchBottomRight.refresh();
@@ -154,7 +155,10 @@ public static void ArcadeDrive(double X, double Y, double Center){
 				SmartDashboard.putBoolean("TopRight", ToteSwitchTopRight.Current);
 				SmartDashboard.putBoolean("BottomLeft", ToteSwitchBottomLeft.Current);
 				SmartDashboard.putBoolean("BottomRight", ToteSwitchBottomRight.Current);
-				isMoving=(speed2!=0?2:0)+(speed1!=0?1:0);
+				
+				isMoving=(speed2!=0?2:0)+(speed1!=0?1:0);//Status of the motors
+				
+				//Stops individual motors when they reach their own end stop
 				if ((ToteLiftUp && ToteSwitchTopLeft.Current) || (!ToteLiftUp && ToteSwitchBottomLeft.Current)) {
 					ToteLift1.stopMotor();
 					speed1=0;
